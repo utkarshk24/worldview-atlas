@@ -1,214 +1,640 @@
 {
-"_asOf": "12 October 2026",
-"IND": {
+ "_asOf": "12 October 2026",
+ "IND": {
   "identity": {
-    "Motto": "Satyameva Jayate (Truth alone triumphs)",
-    "National anthem": "Jana Gana Mana, written by Rabindranath Tagore; adopted 24 January 1950. National song: Vande Mataram (Bankim Chandra Chatterjee).",
-    "Emblem": "Lion Capital of Ashoka from Sarnath: four Asiatic lions back to back on an abacus with the Dharma Chakra, a bull and a horse; motto Satyameva Jayate below in Devanagari.",
-    "Flag symbolism": "Saffron for courage and sacrifice, white for truth and peace, green for faith and fertility; the navy-blue Ashoka Chakra has 24 spokes. Adopted 22 July 1947.",
-    "National day": "Republic Day, 26 January (1950); Independence Day, 15 August (1947)",
-    "National symbols": "Animal: Bengal tiger · Bird: Indian peafowl · Flower: lotus · Tree: banyan · Fruit: mango · Heritage animal: elephant · Aquatic animal: Ganges river dolphin",
-    "Driving side": "Left",
-    "Date format": "DD-MM-YYYY",
-    "Plugs & voltage": "Types C, D, M · 230 V, 50 Hz",
-    "Emergency numbers": "112 (unified) · Police 100 · Fire 101 · Ambulance 108 / 102"
+   "Motto": "Satyameva Jayate (Truth alone triumphs)",
+   "National anthem": "Jana Gana Mana, written by Rabindranath Tagore; adopted 24 January 1950. National song: Vande Mataram (Bankim Chandra Chatterjee).",
+   "Emblem": "Lion Capital of Ashoka from Sarnath: four Asiatic lions back to back on an abacus with the Dharma Chakra, a bull and a horse; motto Satyameva Jayate below in Devanagari.",
+   "Flag symbolism": "Saffron for courage and sacrifice, white for truth and peace, green for faith and fertility; the navy-blue Ashoka Chakra has 24 spokes. Adopted 22 July 1947.",
+   "National day": "Republic Day, 26 January (1950); Independence Day, 15 August (1947)",
+   "National symbols": "Animal: Bengal tiger · Bird: Indian peafowl · Flower: lotus · Tree: banyan · Fruit: mango · Heritage animal: elephant · Aquatic animal: Ganges river dolphin",
+   "Driving side": "Left",
+   "Date format": "DD-MM-YYYY",
+   "Plugs & voltage": "Types C, D, M · 230 V, 50 Hz",
+   "Emergency numbers": "112 (unified) · Police 100 · Fire 101 · Ambulance 108 / 102",
+   "HDI": "0.685, rank 130 of 193 (UNDP Human Development Report 2025, 2023 data)"
   },
   "gov": {
-    "Head of state": "President Droupadi Murmu (since 25 July 2022)",
-    "Vice President": "C. P. Radhakrishnan (since 12 September 2025)",
-    "Head of government": "Prime Minister Narendra Modi (since 26 May 2014; third term from 9 June 2024)",
-    "Ruling coalition": "National Democratic Alliance (NDA), led by the Bharatiya Janata Party (BJP)",
-    "Main opposition": "INDIA bloc, led by the Indian National Congress; Leader of the Opposition in Lok Sabha: Rahul Gandhi (since June 2024)",
-    "Legislature": "Parliament (Sansad), bicameral: Lok Sabha (543 elected seats) and Rajya Sabha (up to 250)",
-    "Last general election": "19 April – 1 June 2024 (results 4 June 2024)",
-    "Next scheduled": "Presidential election due July 2027 · Lok Sabha due by 2029",
-    "Divisions": "28 states and 8 union territories"
+   "Head of state": "President Droupadi Murmu (since 25 July 2022)",
+   "Vice President": "C. P. Radhakrishnan (since 12 September 2025)",
+   "Head of government": "Prime Minister Narendra Modi (since 26 May 2014; third term from 9 June 2024)",
+   "Ruling coalition": "National Democratic Alliance (NDA), led by the Bharatiya Janata Party (BJP)",
+   "Main opposition": "INDIA bloc, led by the Indian National Congress; Leader of the Opposition in Lok Sabha: Rahul Gandhi (since June 2024)",
+   "Legislature": "Parliament (Sansad), bicameral: Lok Sabha (543 elected seats) and Rajya Sabha (up to 250)",
+   "Last general election": "19 April – 1 June 2024 (results 4 June 2024)",
+   "Next scheduled": "Presidential election due July 2027 · Lok Sabha due by 2029",
+   "Divisions": "28 states and 8 union territories",
+   "2026 highlights": "India chairs BRICS in 2026 (18th summit, New Delhi, 12–13 September 2026). India–EU free trade agreement negotiations concluded on 27 January 2026."
   },
-  "cities": [["New Delhi / Delhi","National capital; seat of Parliament, Supreme Court and government"],["Mumbai","Financial capital; RBI, BSE and NSE; Hindi film industry"],["Bengaluru","Technology and start-up hub; ISRO headquarters"],["Kolkata","Eastern gateway; historic capital of British India until 1911"],["Chennai","Automobile and manufacturing hub; major east-coast port"],["Hyderabad","IT, pharmaceuticals and life sciences"],["Ahmedabad","Textiles and commerce; first UNESCO World Heritage City in India"],["Pune","Education, IT and automobile manufacturing"]],
+  "cities": [
+   [
+    "New Delhi / Delhi",
+    "National capital; seat of Parliament, Supreme Court and government"
+   ],
+   [
+    "Mumbai",
+    "Financial capital; RBI, BSE and NSE; Hindi film industry"
+   ],
+   [
+    "Bengaluru",
+    "Technology and start-up hub; ISRO headquarters"
+   ],
+   [
+    "Kolkata",
+    "Eastern gateway; historic capital of British India until 1911"
+   ],
+   [
+    "Chennai",
+    "Automobile and manufacturing hub; major east-coast port"
+   ],
+   [
+    "Hyderabad",
+    "IT, pharmaceuticals and life sciences"
+   ],
+   [
+    "Ahmedabad",
+    "Textiles and commerce; first UNESCO World Heritage City in India"
+   ],
+   [
+    "Pune",
+    "Education, IT and automobile manufacturing"
+   ]
+  ],
   "culture": {
-    "Overview": "A civilisation-state of extraordinary diversity: 22 scheduled languages, every major world religion, and regional cultures that differ as much as countries do.",
-    "Traditional clothing": "Sari, salwar kameez, lehenga, dhoti, kurta, sherwani, and regional forms such as the Maharashtrian nauvari sari and Kerala's mundu.",
-    "Cuisine": "Regional cuisines built on spices, rice, wheat and lentils: biryani, dosa and idli, rogan josh, chole bhature, vada pav, dal, and a vast range of sweets.",
-    "Festivals": "Diwali, Holi, Eid, Christmas, Durga Puja, Ganeshotsav, Onam, Pongal, Navratri, Guru Nanak Jayanti.",
-    "Music & dance": "Hindustani and Carnatic classical traditions; classical dances including Bharatanatyam, Kathak, Odissi, Kathakali, Kuchipudi, Manipuri, Mohiniyattam and Sattriya.",
-    "Sports": "Cricket dominates (ICC Men's World Cup 1983, 2011; Men's T20 World Cup 2007, 2024; Women's World Cup 2025). Field hockey: 8 Olympic gold medals. Kabaddi and chess (several world champions) are widely followed.",
-    "UNESCO World Heritage": "44 sites (2025), including the Taj Mahal, Ajanta and Ellora caves, Hampi, Western Ghats and the Maratha Military Landscapes."
+   "Overview": "A civilisation-state of extraordinary diversity: 22 scheduled languages, every major world religion, and regional cultures that differ as much as countries do.",
+   "Traditional clothing": "Sari, salwar kameez, lehenga, dhoti, kurta, sherwani, and regional forms such as the Maharashtrian nauvari sari and Kerala's mundu.",
+   "Cuisine": "Regional cuisines built on spices, rice, wheat and lentils: biryani, dosa and idli, rogan josh, chole bhature, vada pav, dal, and a vast range of sweets.",
+   "Festivals": "Diwali, Holi, Eid, Christmas, Durga Puja, Ganeshotsav, Onam, Pongal, Navratri, Guru Nanak Jayanti.",
+   "Music & dance": "Hindustani and Carnatic classical traditions; classical dances including Bharatanatyam, Kathak, Odissi, Kathakali, Kuchipudi, Manipuri, Mohiniyattam and Sattriya.",
+   "Sports": "Cricket dominates (ICC Men's World Cup 1983, 2011; Men's T20 World Cup 2007, 2024; Women's World Cup 2025). Field hockey: 8 Olympic gold medals. Kabaddi and chess (several world champions) are widely followed.",
+   "UNESCO World Heritage": "44 sites (2025), including the Taj Mahal, Ajanta and Ellora caves, Hampi, Western Ghats and the Maratha Military Landscapes."
   },
-  "tourism": ["Taj Mahal, Agra","Jaipur and Rajasthan's forts","Varanasi ghats","Kerala backwaters","Goa beaches","Ladakh","Ajanta & Ellora caves","Hampi"],
-  "history": [["c. 2600–1900 BCE","Indus Valley (Harappan) civilisation"],["c. 322–185 BCE","Maurya Empire; Ashoka spreads Buddhism"],["c. 320–550 CE","Gupta era: advances in mathematics, astronomy and literature"],["1206","Delhi Sultanate established"],["1526","Mughal Empire founded after the First Battle of Panipat"],["1757","Battle of Plassey; East India Company rule expands"],["1857","Revolt of 1857; Crown rule follows in 1858"],["15 Aug 1947","Independence from Britain; Partition creates Pakistan"],["26 Jan 1950","Constitution takes effect; India becomes a republic"],["1991","Economic liberalisation"],["2023","Chandrayaan-3 lands near the lunar south pole; G20 presidency"]],
+  "tourism": [
+   "Taj Mahal, Agra",
+   "Jaipur and Rajasthan's forts",
+   "Varanasi ghats",
+   "Kerala backwaters",
+   "Goa beaches",
+   "Ladakh",
+   "Ajanta & Ellora caves",
+   "Hampi"
+  ],
+  "history": [
+   [
+    "c. 2600–1900 BCE",
+    "Indus Valley (Harappan) civilisation"
+   ],
+   [
+    "c. 322–185 BCE",
+    "Maurya Empire; Ashoka spreads Buddhism"
+   ],
+   [
+    "c. 320–550 CE",
+    "Gupta era: advances in mathematics, astronomy and literature"
+   ],
+   [
+    "1206",
+    "Delhi Sultanate established"
+   ],
+   [
+    "1526",
+    "Mughal Empire founded after the First Battle of Panipat"
+   ],
+   [
+    "1757",
+    "Battle of Plassey; East India Company rule expands"
+   ],
+   [
+    "1857",
+    "Revolt of 1857; Crown rule follows in 1858"
+   ],
+   [
+    "15 Aug 1947",
+    "Independence from Britain; Partition creates Pakistan"
+   ],
+   [
+    "26 Jan 1950",
+    "Constitution takes effect; India becomes a republic"
+   ],
+   [
+    "1991",
+    "Economic liberalisation"
+   ],
+   [
+    "2023",
+    "Chandrayaan-3 lands near the lunar south pole; G20 presidency"
+   ]
+  ],
   "india": null,
-  "facts": ["World's most populous country since 2023 (UN estimate).","A single time zone, IST (UTC+05:30), despite spanning about 30° of longitude.","Chandrayaan-3 (August 2023) made the first soft landing near the Moon's south pole.","Chess traces its roots to chaturanga, played in India around the 6th century CE."]
-},
-"USA": {
+  "facts": [
+   "World's most populous country since 2023 (UN estimate).",
+   "A single time zone, IST (UTC+05:30), despite spanning about 30° of longitude.",
+   "Chandrayaan-3 (August 2023) made the first soft landing near the Moon's south pole.",
+   "Chess traces its roots to chaturanga, played in India around the 6th century CE."
+  ]
+ },
+ "USA": {
   "identity": {
-    "Motto": "In God We Trust (official since 1956); E pluribus unum (traditional)",
-    "National anthem": "The Star-Spangled Banner, lyrics by Francis Scott Key (1814); official anthem since 1931.",
-    "Emblem": "Great Seal: a bald eagle holding an olive branch and arrows, with a shield of 13 stripes and the motto E pluribus unum.",
-    "Flag symbolism": "13 stripes for the original colonies; 50 stars for the states.",
-    "National day": "Independence Day, 4 July (1776)",
-    "National symbols": "Bird: bald eagle · Mammal: American bison · Flower: rose · Tree: oak",
-    "Driving side": "Right",
-    "Date format": "MM/DD/YYYY",
-    "Plugs & voltage": "Types A, B · 120 V, 60 Hz",
-    "Emergency numbers": "911"
+   "Motto": "In God We Trust (official since 1956); E pluribus unum (traditional)",
+   "National anthem": "The Star-Spangled Banner, lyrics by Francis Scott Key (1814); official anthem since 1931.",
+   "Emblem": "Great Seal: a bald eagle holding an olive branch and arrows, with a shield of 13 stripes and the motto E pluribus unum.",
+   "Flag symbolism": "13 stripes for the original colonies; 50 stars for the states.",
+   "National day": "Independence Day, 4 July (1776)",
+   "National symbols": "Bird: bald eagle · Mammal: American bison · Flower: rose · Tree: oak",
+   "Driving side": "Right",
+   "Date format": "MM/DD/YYYY",
+   "Plugs & voltage": "Types A, B · 120 V, 60 Hz",
+   "Emergency numbers": "911"
   },
   "gov": {
-    "Head of state & government": "President Donald J. Trump (since 20 January 2025; 47th president)",
-    "Vice President": "JD Vance (since 20 January 2025)",
-    "Ruling party": "Republican Party (holds the presidency and majorities in both chambers of the 119th Congress)",
-    "Main opposition": "Democratic Party",
-    "Legislature": "Congress, bicameral: House of Representatives (435) and Senate (100)",
-    "Last election": "5 November 2024 (presidential and congressional)",
-    "Next scheduled": "Midterm elections 3 November 2026 · Presidential election November 2028",
-    "Divisions": "50 states, 1 federal district (Washington, D.C.), plus territories"
+   "Head of state & government": "President Donald J. Trump (since 20 January 2025; 47th president)",
+   "Vice President": "JD Vance (since 20 January 2025)",
+   "Ruling party": "Republican Party (holds the presidency and majorities in both chambers of the 119th Congress)",
+   "Main opposition": "Democratic Party",
+   "Legislature": "Congress, bicameral: House of Representatives (435) and Senate (100)",
+   "Last election": "5 November 2024 (presidential and congressional)",
+   "Next scheduled": "Midterm elections 3 November 2026 · Presidential election November 2028",
+   "Divisions": "50 states, 1 federal district (Washington, D.C.), plus territories"
   },
-  "cities": [["New York City","Finance (Wall Street) and UN headquarters"],["Los Angeles","Entertainment industry and Pacific trade"],["Chicago","Midwest transport, commodities and finance hub"],["Houston","Energy industry; NASA Johnson Space Center"],["Washington, D.C.","Federal capital"],["San Francisco Bay Area","Silicon Valley technology hub"],["Seattle","Aerospace, cloud computing and e-commerce"],["Boston","Universities, biotech and medicine"]],
+  "cities": [
+   [
+    "New York City",
+    "Finance (Wall Street) and UN headquarters"
+   ],
+   [
+    "Los Angeles",
+    "Entertainment industry and Pacific trade"
+   ],
+   [
+    "Chicago",
+    "Midwest transport, commodities and finance hub"
+   ],
+   [
+    "Houston",
+    "Energy industry; NASA Johnson Space Center"
+   ],
+   [
+    "Washington, D.C.",
+    "Federal capital"
+   ],
+   [
+    "San Francisco Bay Area",
+    "Silicon Valley technology hub"
+   ],
+   [
+    "Seattle",
+    "Aerospace, cloud computing and e-commerce"
+   ],
+   [
+    "Boston",
+    "Universities, biotech and medicine"
+   ]
+  ],
   "culture": {
-    "Overview": "A nation of immigrants with a culture that has shaped global film, music, technology and consumer brands.",
-    "Traditional clothing": "No single national dress; denim jeans and cowboy dress are widely associated with the US. Indigenous nations keep their own regalia.",
-    "Cuisine": "Regional and immigrant-driven: barbecue, burgers, Southern cooking, Tex-Mex, New England seafood, Cajun and Creole dishes.",
-    "Festivals": "Thanksgiving, Independence Day, Halloween, Christmas, Martin Luther King Jr. Day.",
-    "Music & dance": "Birthplace of jazz, blues, country, rock and roll and hip hop.",
-    "Sports": "American football, basketball, baseball and ice hockey; consistently tops the all-time Summer Olympic medal table.",
-    "UNESCO World Heritage": "Includes Yellowstone, the Grand Canyon, the Statue of Liberty and Mesa Verde."
+   "Overview": "A nation of immigrants with a culture that has shaped global film, music, technology and consumer brands.",
+   "Traditional clothing": "No single national dress; denim jeans and cowboy dress are widely associated with the US. Indigenous nations keep their own regalia.",
+   "Cuisine": "Regional and immigrant-driven: barbecue, burgers, Southern cooking, Tex-Mex, New England seafood, Cajun and Creole dishes.",
+   "Festivals": "Thanksgiving, Independence Day, Halloween, Christmas, Martin Luther King Jr. Day.",
+   "Music & dance": "Birthplace of jazz, blues, country, rock and roll and hip hop.",
+   "Sports": "American football, basketball, baseball and ice hockey; consistently tops the all-time Summer Olympic medal table.",
+   "UNESCO World Heritage": "Includes Yellowstone, the Grand Canyon, the Statue of Liberty and Mesa Verde."
   },
-  "tourism": ["New York City","Grand Canyon","Yellowstone","Orlando theme parks","Las Vegas","San Francisco","Hawaii","Washington, D.C. monuments"],
-  "history": [["Before 1492","Diverse Indigenous nations across the continent"],["1607","Jamestown, first permanent English settlement"],["4 Jul 1776","Declaration of Independence"],["1787–1789","Constitution drafted and takes effect"],["1861–1865","Civil War; slavery abolished (13th Amendment, 1865)"],["1941–1945","Enters World War II after Pearl Harbor"],["1964–1965","Civil Rights Act and Voting Rights Act"],["1969","Apollo 11 Moon landing"],["2001","September 11 attacks"]],
+  "tourism": [
+   "New York City",
+   "Grand Canyon",
+   "Yellowstone",
+   "Orlando theme parks",
+   "Las Vegas",
+   "San Francisco",
+   "Hawaii",
+   "Washington, D.C. monuments"
+  ],
+  "history": [
+   [
+    "Before 1492",
+    "Diverse Indigenous nations across the continent"
+   ],
+   [
+    "1607",
+    "Jamestown, first permanent English settlement"
+   ],
+   [
+    "4 Jul 1776",
+    "Declaration of Independence"
+   ],
+   [
+    "1787–1789",
+    "Constitution drafted and takes effect"
+   ],
+   [
+    "1861–1865",
+    "Civil War; slavery abolished (13th Amendment, 1865)"
+   ],
+   [
+    "1941–1945",
+    "Enters World War II after Pearl Harbor"
+   ],
+   [
+    "1964–1965",
+    "Civil Rights Act and Voting Rights Act"
+   ],
+   [
+    "1969",
+    "Apollo 11 Moon landing"
+   ],
+   [
+    "2001",
+    "September 11 attacks"
+   ]
+  ],
   "india": {
-    "Relationship": "Comprehensive Global Strategic Partnership (2020).",
-    "Key agreements": "Civil nuclear agreement (2008) · LEMOA (2016) · COMCASA (2018) · BECA (2020) · iCET (2023), relaunched as TRUST (2025) · 10-year defence framework (2025)",
-    "Defence": "Designated India a Major Defence Partner (2016). Joint exercises include Malabar, Yudh Abhyas and Cope India.",
-    "Trade": "One of India's largest trading partners. Higher US tariffs on Indian goods in 2025 led to continuing trade negotiations.",
-    "Diaspora": "One of the largest and most prosperous Indian diaspora communities, prominent in technology, medicine and academia."
+   "Relationship": "Comprehensive Global Strategic Partnership (2020).",
+   "Key agreements": "Civil nuclear agreement (2008) · LEMOA (2016) · COMCASA (2018) · BECA (2020) · iCET (2023), relaunched as TRUST (2025) · 10-year defence framework (2025)",
+   "Defence": "Designated India a Major Defence Partner (2016). Joint exercises include Malabar, Yudh Abhyas and Cope India.",
+   "Trade": "One of India's largest trading partners. After US tariffs on Indian goods rose to 50% in 2025, a framework deal announced on 2 February 2026 set a lower 18% rate; implementation details are still being worked out.",
+   "Diaspora": "One of the largest and most prosperous Indian diaspora communities, prominent in technology, medicine and academia."
   },
-  "facts": ["Yellowstone (1872) was the world's first national park.","The US bought Alaska from Russia in 1867.","English was designated the official language by executive order only in March 2025."]
-},
-"JPN": {
+  "facts": [
+   "Yellowstone (1872) was the world's first national park.",
+   "The US bought Alaska from Russia in 1867.",
+   "English was designated the official language by executive order only in March 2025."
+  ]
+ },
+ "JPN": {
   "identity": {
-    "Motto": "None official",
-    "National anthem": "Kimigayo, lyrics from a Heian-period poem; officially designated in 1999.",
-    "Emblem": "No official coat of arms. The 16-petal chrysanthemum is the imperial seal; the paulownia crest is used by the government.",
-    "Flag symbolism": "Nisshōki (Hinomaru): a red disc on white representing the sun.",
-    "National day": "National Foundation Day, 11 February · Emperor's Birthday, 23 February",
-    "National symbols": "Bird: green pheasant · Flowers: cherry blossom and chrysanthemum",
-    "Driving side": "Left",
-    "Date format": "YYYY/MM/DD",
-    "Plugs & voltage": "Types A, B · 100 V, 50 Hz (east) / 60 Hz (west)",
-    "Emergency numbers": "Police 110 · Fire & ambulance 119"
+   "Motto": "None official",
+   "National anthem": "Kimigayo, lyrics from a Heian-period poem; officially designated in 1999.",
+   "Emblem": "No official coat of arms. The 16-petal chrysanthemum is the imperial seal; the paulownia crest is used by the government.",
+   "Flag symbolism": "Nisshōki (Hinomaru): a red disc on white representing the sun.",
+   "National day": "National Foundation Day, 11 February · Emperor's Birthday, 23 February",
+   "National symbols": "Bird: green pheasant · Flowers: cherry blossom and chrysanthemum",
+   "Driving side": "Left",
+   "Date format": "YYYY/MM/DD",
+   "Plugs & voltage": "Types A, B · 100 V, 50 Hz (east) / 60 Hz (west)",
+   "Emergency numbers": "Police 110 · Fire & ambulance 119"
   },
   "gov": {
-    "Head of state": "Emperor Naruhito (since 1 May 2019)",
-    "Head of government": "Prime Minister Sanae Takaichi (since 21 October 2025); first woman to hold the office",
-    "Ruling coalition": "Liberal Democratic Party (LDP) with Nippon Ishin no Kai (Japan Innovation Party)",
-    "Main opposition": "Centrist Reform Alliance",
-    "Legislature": "National Diet, bicameral: House of Representatives (465) and House of Councillors (248)",
-    "Last general election": "8 February 2026: LDP won 316 of 465 seats, a two-thirds majority on its own; Ishin 36",
-    "Next scheduled": "House of Councillors election due 2028",
-    "Divisions": "47 prefectures"
+   "Head of state": "Emperor Naruhito (since 1 May 2019)",
+   "Head of government": "Prime Minister Sanae Takaichi (since 21 October 2025); first woman to hold the office",
+   "Ruling coalition": "Liberal Democratic Party (LDP) with Nippon Ishin no Kai (Japan Innovation Party)",
+   "Main opposition": "Centrist Reform Alliance",
+   "Legislature": "National Diet, bicameral: House of Representatives (465) and House of Councillors (248)",
+   "Last general election": "8 February 2026: LDP won 316 of 465 seats, a two-thirds majority on its own; Ishin 36",
+   "Next scheduled": "House of Councillors election due 2028",
+   "Divisions": "47 prefectures"
   },
-  "cities": [["Tokyo","Capital; world's largest metropolitan economy"],["Yokohama","Major port and second-largest city"],["Osaka","Commercial heart of Kansai; known for food culture"],["Nagoya","Automotive industry centre"],["Sapporo","Hokkaido's capital; Snow Festival"],["Fukuoka","Gateway to Asia; start-up hub"],["Kobe","Port city"],["Kyoto","Imperial capital for over a millennium; temples and shrines"]],
+  "cities": [
+   [
+    "Tokyo",
+    "Capital; world's largest metropolitan economy"
+   ],
+   [
+    "Yokohama",
+    "Major port and second-largest city"
+   ],
+   [
+    "Osaka",
+    "Commercial heart of Kansai; known for food culture"
+   ],
+   [
+    "Nagoya",
+    "Automotive industry centre"
+   ],
+   [
+    "Sapporo",
+    "Hokkaido's capital; Snow Festival"
+   ],
+   [
+    "Fukuoka",
+    "Gateway to Asia; start-up hub"
+   ],
+   [
+    "Kobe",
+    "Port city"
+   ],
+   [
+    "Kyoto",
+    "Imperial capital for over a millennium; temples and shrines"
+   ]
+  ],
   "culture": {
-    "Overview": "Tradition and high technology side by side, shaped by Shinto and Buddhism and a strong emphasis on harmony (wa) and craftsmanship.",
-    "Traditional clothing": "Kimono, yukata (summer cotton), hakama.",
-    "Cuisine": "Washoku (UNESCO intangible heritage): sushi, ramen, tempura, miso, soba, kaiseki multi-course dining.",
-    "Festivals": "Gion Matsuri, cherry-blossom viewing (hanami), Obon, New Year (Shōgatsu).",
-    "Music & dance": "Noh and kabuki theatre, taiko drumming, J-pop.",
-    "Sports": "Sumo (national sport), baseball, football and judo; hosted the 1964 and 2020 Summer Olympics.",
-    "UNESCO World Heritage": "Includes Mount Fuji, Himeji Castle, historic Kyoto and the Hiroshima Peace Memorial."
+   "Overview": "Tradition and high technology side by side, shaped by Shinto and Buddhism and a strong emphasis on harmony (wa) and craftsmanship.",
+   "Traditional clothing": "Kimono, yukata (summer cotton), hakama.",
+   "Cuisine": "Washoku (UNESCO intangible heritage): sushi, ramen, tempura, miso, soba, kaiseki multi-course dining.",
+   "Festivals": "Gion Matsuri, cherry-blossom viewing (hanami), Obon, New Year (Shōgatsu).",
+   "Music & dance": "Noh and kabuki theatre, taiko drumming, J-pop.",
+   "Sports": "Sumo (national sport), baseball, football and judo; hosted the 1964 and 2020 Summer Olympics.",
+   "UNESCO World Heritage": "Includes Mount Fuji, Himeji Castle, historic Kyoto and the Hiroshima Peace Memorial."
   },
-  "tourism": ["Tokyo","Kyoto","Mount Fuji","Osaka","Hiroshima & Miyajima","Nara","Hokkaido","Okinawa"],
-  "history": [["c. 300 BCE–300 CE","Yayoi period: rice farming and metalworking"],["794","Capital moves to Heian-kyō (Kyoto)"],["1603","Tokugawa shogunate begins the Edo period"],["1868","Meiji Restoration and rapid modernisation"],["1945","Atomic bombings of Hiroshima and Nagasaki; surrender ends WWII"],["1947","Postwar constitution takes effect"],["1964","Tokyo Olympics; Shinkansen opens"],["2011","Tōhoku earthquake, tsunami and Fukushima nuclear accident"],["2019","Reiwa era begins with Emperor Naruhito"]],
+  "tourism": [
+   "Tokyo",
+   "Kyoto",
+   "Mount Fuji",
+   "Osaka",
+   "Hiroshima & Miyajima",
+   "Nara",
+   "Hokkaido",
+   "Okinawa"
+  ],
+  "history": [
+   [
+    "c. 300 BCE–300 CE",
+    "Yayoi period: rice farming and metalworking"
+   ],
+   [
+    "794",
+    "Capital moves to Heian-kyō (Kyoto)"
+   ],
+   [
+    "1603",
+    "Tokugawa shogunate begins the Edo period"
+   ],
+   [
+    "1868",
+    "Meiji Restoration and rapid modernisation"
+   ],
+   [
+    "1945",
+    "Atomic bombings of Hiroshima and Nagasaki; surrender ends WWII"
+   ],
+   [
+    "1947",
+    "Postwar constitution takes effect"
+   ],
+   [
+    "1964",
+    "Tokyo Olympics; Shinkansen opens"
+   ],
+   [
+    "2011",
+    "Tōhoku earthquake, tsunami and Fukushima nuclear accident"
+   ],
+   [
+    "2019",
+    "Reiwa era begins with Emperor Naruhito"
+   ]
+  ],
   "india": {
-    "Relationship": "Special Strategic and Global Partnership (2014).",
-    "Key agreements": "Civil nuclear agreement (2016) · Acquisition and Cross-Servicing Agreement (2020) · 2+2 ministerial dialogue (since 2019)",
-    "Development": "India's largest bilateral ODA partner; funding the Mumbai–Ahmedabad high-speed rail (Shinkansen technology) and metro systems.",
-    "Investment": "At the August 2025 summit both sides set a target of ¥10 trillion in Japanese private investment in India over a decade.",
-    "Defence": "Quad partner; regular naval exercises including JIMEX and Malabar."
+   "Relationship": "Special Strategic and Global Partnership (2014).",
+   "Key agreements": "Civil nuclear agreement (2016) · Acquisition and Cross-Servicing Agreement (2020) · 2+2 ministerial dialogue (since 2019)",
+   "Development": "India's largest bilateral ODA partner; funding the Mumbai–Ahmedabad high-speed rail (Shinkansen technology) and metro systems.",
+   "Investment": "At the August 2025 summit both sides set a target of ¥10 trillion in Japanese private investment in India over a decade.",
+   "Defence": "Quad partner; regular naval exercises including JIMEX and Malabar."
   },
-  "facts": ["A 2023 government survey counted 14,125 islands.","Mount Fuji (3,776 m) is the highest point.","The Shinkansen opened in 1964, just before the Tokyo Olympics."]
-},
-"BRA": {
+  "facts": [
+   "A 2023 government survey counted 14,125 islands.",
+   "Mount Fuji (3,776 m) is the highest point.",
+   "The Shinkansen opened in 1964, just before the Tokyo Olympics."
+  ]
+ },
+ "BRA": {
   "identity": {
-    "Motto": "Ordem e Progresso (Order and Progress), shown on the flag",
-    "National anthem": "Hino Nacional Brasileiro; music by Francisco Manuel da Silva (1831), lyrics by Joaquim Osório Duque Estrada (1909).",
-    "Emblem": "Coat of arms with a five-pointed star, the Southern Cross, a sword, and coffee and tobacco branches.",
-    "Flag symbolism": "Green field, yellow rhombus and a blue celestial globe showing the sky over Rio on 15 November 1889; 27 stars for the states and Federal District.",
-    "National day": "Independence Day, 7 September (1822)",
-    "National symbols": "Bird: rufous-bellied thrush · Flower: cattleya orchid · Tree: Brazilwood (pau-brasil)",
-    "Driving side": "Right",
-    "Date format": "DD/MM/YYYY",
-    "Plugs & voltage": "Types C, N · 127 V or 220 V depending on region, 60 Hz",
-    "Emergency numbers": "Police 190 · Ambulance 192 · Fire 193"
+   "Motto": "Ordem e Progresso (Order and Progress), shown on the flag",
+   "National anthem": "Hino Nacional Brasileiro; music by Francisco Manuel da Silva (1831), lyrics by Joaquim Osório Duque Estrada (1909).",
+   "Emblem": "Coat of arms with a five-pointed star, the Southern Cross, a sword, and coffee and tobacco branches.",
+   "Flag symbolism": "Green field, yellow rhombus and a blue celestial globe showing the sky over Rio on 15 November 1889; 27 stars for the states and Federal District.",
+   "National day": "Independence Day, 7 September (1822)",
+   "National symbols": "Bird: rufous-bellied thrush · Flower: cattleya orchid · Tree: Brazilwood (pau-brasil)",
+   "Driving side": "Right",
+   "Date format": "DD/MM/YYYY",
+   "Plugs & voltage": "Types C, N · 127 V or 220 V depending on region, 60 Hz",
+   "Emergency numbers": "Police 190 · Ambulance 192 · Fire 193"
   },
   "gov": {
-    "Head of state & government": "President Luiz Inácio Lula da Silva, Workers' Party (PT) (since 1 January 2023)",
-    "Vice President": "Geraldo Alckmin (since 1 January 2023)",
-    "2026 election": "First round 4 October 2026: Flávio Bolsonaro (Liberal Party, PL) about 47%, Lula about 45% of valid votes. Runoff scheduled for 25 October 2026.",
-    "Legislature": "National Congress, bicameral: Chamber of Deputies (513) and Federal Senate (81)",
-    "Constitution": "1988",
-    "Divisions": "26 states and 1 Federal District"
+   "Head of state & government": "President Luiz Inácio Lula da Silva, Workers' Party (PT) (since 1 January 2023)",
+   "Vice President": "Geraldo Alckmin (since 1 January 2023)",
+   "2026 election": "First round 4 October 2026: Flávio Bolsonaro (Liberal Party, PL) about 47%, Lula about 45% of valid votes. Runoff scheduled for 25 October 2026.",
+   "Legislature": "National Congress, bicameral: Chamber of Deputies (513) and Federal Senate (81)",
+   "Constitution": "1988",
+   "Divisions": "26 states and 1 Federal District"
   },
-  "cities": [["São Paulo","Largest city; financial and industrial centre of South America"],["Rio de Janeiro","Tourism, oil industry and culture; Carnival"],["Brasília","Planned capital inaugurated in 1960; UNESCO site"],["Salvador","Afro-Brazilian culture; colonial capital"],["Fortaleza","North-eastern tourism and trade"],["Belo Horizonte","Mining and industry in Minas Gerais"],["Manaus","Amazon gateway; free-trade industrial zone"],["Recife","Technology park and historic port"]],
+  "cities": [
+   [
+    "São Paulo",
+    "Largest city; financial and industrial centre of South America"
+   ],
+   [
+    "Rio de Janeiro",
+    "Tourism, oil industry and culture; Carnival"
+   ],
+   [
+    "Brasília",
+    "Planned capital inaugurated in 1960; UNESCO site"
+   ],
+   [
+    "Salvador",
+    "Afro-Brazilian culture; colonial capital"
+   ],
+   [
+    "Fortaleza",
+    "North-eastern tourism and trade"
+   ],
+   [
+    "Belo Horizonte",
+    "Mining and industry in Minas Gerais"
+   ],
+   [
+    "Manaus",
+    "Amazon gateway; free-trade industrial zone"
+   ],
+   [
+    "Recife",
+    "Technology park and historic port"
+   ]
+  ],
   "culture": {
-    "Overview": "A blend of Indigenous, Portuguese, African and immigrant (Italian, Japanese, Arab) heritage, expressed in music, food and festivals.",
-    "Traditional clothing": "Baiana dress in Bahia; gaúcho attire in the south.",
-    "Cuisine": "Feijoada, pão de queijo, moqueca, churrasco, açaí, brigadeiro.",
-    "Festivals": "Carnival, Festa Junina, Parintins Folklore Festival.",
-    "Music & dance": "Samba, bossa nova, forró, MPB; capoeira combines martial art and dance.",
-    "Sports": "Football: record five FIFA World Cups (1958, 1962, 1970, 1994, 2002). Volleyball, MMA and Formula 1 are also popular.",
-    "UNESCO World Heritage": "Includes Iguaçu National Park, historic Salvador, Brasília and the Central Amazon Conservation Complex."
+   "Overview": "A blend of Indigenous, Portuguese, African and immigrant (Italian, Japanese, Arab) heritage, expressed in music, food and festivals.",
+   "Traditional clothing": "Baiana dress in Bahia; gaúcho attire in the south.",
+   "Cuisine": "Feijoada, pão de queijo, moqueca, churrasco, açaí, brigadeiro.",
+   "Festivals": "Carnival, Festa Junina, Parintins Folklore Festival.",
+   "Music & dance": "Samba, bossa nova, forró, MPB; capoeira combines martial art and dance.",
+   "Sports": "Football: record five FIFA World Cups (1958, 1962, 1970, 1994, 2002). Volleyball, MMA and Formula 1 are also popular.",
+   "UNESCO World Heritage": "Includes Iguaçu National Park, historic Salvador, Brasília and the Central Amazon Conservation Complex."
   },
-  "tourism": ["Rio de Janeiro","Iguaçu Falls","Amazon rainforest","Salvador","Pantanal wetlands","Fernando de Noronha","Ouro Preto","Florianópolis"],
-  "history": [["1500","Pedro Álvares Cabral claims the land for Portugal"],["1808","Portuguese court relocates to Rio de Janeiro"],["7 Sep 1822","Independence; Empire of Brazil"],["1888","Abolition of slavery (Lei Áurea)"],["15 Nov 1889","Republic proclaimed"],["1960","Capital moves to Brasília"],["1964–1985","Military rule"],["1988","Current constitution adopted"],["2016","Rio de Janeiro hosts the Summer Olympics"]],
+  "tourism": [
+   "Rio de Janeiro",
+   "Iguaçu Falls",
+   "Amazon rainforest",
+   "Salvador",
+   "Pantanal wetlands",
+   "Fernando de Noronha",
+   "Ouro Preto",
+   "Florianópolis"
+  ],
+  "history": [
+   [
+    "1500",
+    "Pedro Álvares Cabral claims the land for Portugal"
+   ],
+   [
+    "1808",
+    "Portuguese court relocates to Rio de Janeiro"
+   ],
+   [
+    "7 Sep 1822",
+    "Independence; Empire of Brazil"
+   ],
+   [
+    "1888",
+    "Abolition of slavery (Lei Áurea)"
+   ],
+   [
+    "15 Nov 1889",
+    "Republic proclaimed"
+   ],
+   [
+    "1960",
+    "Capital moves to Brasília"
+   ],
+   [
+    "1964–1985",
+    "Military rule"
+   ],
+   [
+    "1988",
+    "Current constitution adopted"
+   ],
+   [
+    "2016",
+    "Rio de Janeiro hosts the Summer Olympics"
+   ]
+  ],
   "india": {
-    "Relationship": "Strategic Partnership (2006).",
-    "Groupings": "Fellow members of BRICS, IBSA, G4 (UN Security Council reform), BASIC and G20.",
-    "Recent": "Prime Minister Modi made a state visit to Brasília in July 2025 after the BRICS summit in Rio de Janeiro.",
-    "Cooperation": "Biofuels (both founding members of the Global Biofuels Alliance, 2023), agriculture, defence and space."
+   "Relationship": "Strategic Partnership (2006).",
+   "Groupings": "Fellow members of BRICS, IBSA, G4 (UN Security Council reform), BASIC and G20.",
+   "Recent": "Prime Minister Modi made a state visit to Brasília in July 2025 after the BRICS summit in Rio de Janeiro.",
+   "Cooperation": "Biofuels (both founding members of the Global Biofuels Alliance, 2023), agriculture, defence and space."
   },
-  "facts": ["About 60% of the Amazon rainforest lies in Brazil.","Home to the largest population of Japanese descent outside Japan.","The only team to have played in every FIFA World Cup."]
-},
-"DEU": {
+  "facts": [
+   "About 60% of the Amazon rainforest lies in Brazil.",
+   "Home to the largest population of Japanese descent outside Japan.",
+   "The only team to have played in every FIFA World Cup."
+  ]
+ },
+ "DEU": {
   "identity": {
-    "Motto": "Einigkeit und Recht und Freiheit (Unity and Justice and Freedom), unofficial",
-    "National anthem": "The third stanza of Das Lied der Deutschen; music by Joseph Haydn (1797), lyrics by August Heinrich Hoffmann von Fallersleben (1841).",
-    "Emblem": "Federal eagle (Bundesadler): a black eagle with red beak and claws on a gold field.",
-    "Flag symbolism": "Black, red and gold, the colours of the 1848 democratic movement; readopted in 1949.",
-    "National day": "Day of German Unity, 3 October (1990)",
-    "National symbols": "Federal eagle; cornflower and oak are traditional symbols",
-    "Driving side": "Right",
-    "Date format": "DD.MM.YYYY",
-    "Plugs & voltage": "Types C, F · 230 V, 50 Hz",
-    "Emergency numbers": "Police 110 · Fire & ambulance 112"
+   "Motto": "Einigkeit und Recht und Freiheit (Unity and Justice and Freedom), unofficial",
+   "National anthem": "The third stanza of Das Lied der Deutschen; music by Joseph Haydn (1797), lyrics by August Heinrich Hoffmann von Fallersleben (1841).",
+   "Emblem": "Federal eagle (Bundesadler): a black eagle with red beak and claws on a gold field.",
+   "Flag symbolism": "Black, red and gold, the colours of the 1848 democratic movement; readopted in 1949.",
+   "National day": "Day of German Unity, 3 October (1990)",
+   "National symbols": "Federal eagle; cornflower and oak are traditional symbols",
+   "Driving side": "Right",
+   "Date format": "DD.MM.YYYY",
+   "Plugs & voltage": "Types C, F · 230 V, 50 Hz",
+   "Emergency numbers": "Police 110 · Fire & ambulance 112"
   },
   "gov": {
-    "Head of state": "Federal President Frank-Walter Steinmeier (since 19 March 2017)",
-    "Head of government": "Federal Chancellor Friedrich Merz, CDU (since 6 May 2025)",
-    "Ruling coalition": "CDU/CSU with the SPD",
-    "Main opposition": "Alternative for Germany (AfD), largest opposition party; also the Greens and Die Linke",
-    "Legislature": "Bundestag (630 seats) and Bundesrat (69 votes, representing the 16 states)",
-    "Last federal election": "23 February 2025",
-    "Next scheduled": "Federal Convention to elect the president due in 2027 · Bundestag election due by 2029",
-    "Divisions": "16 states (Länder)"
+   "Head of state": "Federal President Frank-Walter Steinmeier (since 19 March 2017)",
+   "Head of government": "Federal Chancellor Friedrich Merz, CDU (since 6 May 2025)",
+   "Ruling coalition": "CDU/CSU with the SPD",
+   "Main opposition": "Alternative for Germany (AfD), largest opposition party; also the Greens and Die Linke",
+   "Legislature": "Bundestag (630 seats) and Bundesrat (69 votes, representing the 16 states)",
+   "Last federal election": "23 February 2025",
+   "Next scheduled": "Federal Convention to elect the president due in 2027 · Bundestag election due by 2029",
+   "Divisions": "16 states (Länder)"
   },
-  "cities": [["Berlin","Capital; politics, culture and start-ups"],["Hamburg","Largest port; media and trade"],["Munich","Bavarian capital; automotive and technology"],["Cologne","Cathedral city; media and trade fairs"],["Frankfurt","Finance: European Central Bank and stock exchange"],["Stuttgart","Automotive engineering"],["Düsseldorf","Fashion, trade fairs and industry"],["Leipzig","Trade fairs, logistics and music history"]],
+  "cities": [
+   [
+    "Berlin",
+    "Capital; politics, culture and start-ups"
+   ],
+   [
+    "Hamburg",
+    "Largest port; media and trade"
+   ],
+   [
+    "Munich",
+    "Bavarian capital; automotive and technology"
+   ],
+   [
+    "Cologne",
+    "Cathedral city; media and trade fairs"
+   ],
+   [
+    "Frankfurt",
+    "Finance: European Central Bank and stock exchange"
+   ],
+   [
+    "Stuttgart",
+    "Automotive engineering"
+   ],
+   [
+    "Düsseldorf",
+    "Fashion, trade fairs and industry"
+   ],
+   [
+    "Leipzig",
+    "Trade fairs, logistics and music history"
+   ]
+  ],
   "culture": {
-    "Overview": "Land of philosophers, composers and engineers, with strong regional identities and a federal tradition.",
-    "Traditional clothing": "Dirndl and Lederhosen (Bavaria and the Alpine south).",
-    "Cuisine": "Bread culture, sausages (Wurst), sauerkraut, pretzels, Schnitzel, Black Forest cake; a long brewing tradition.",
-    "Festivals": "Oktoberfest, Christmas markets, Carnival (Karneval/Fasching).",
-    "Music & dance": "Bach, Beethoven, Brahms and Wagner; electronic music scene in Berlin.",
-    "Sports": "Football: four men's FIFA World Cups (1954, 1974, 1990, 2014). Motorsport, handball and winter sports are popular.",
-    "UNESCO World Heritage": "Includes Cologne Cathedral, Museum Island in Berlin, the Wadden Sea and the Upper Middle Rhine Valley."
+   "Overview": "Land of philosophers, composers and engineers, with strong regional identities and a federal tradition.",
+   "Traditional clothing": "Dirndl and Lederhosen (Bavaria and the Alpine south).",
+   "Cuisine": "Bread culture, sausages (Wurst), sauerkraut, pretzels, Schnitzel, Black Forest cake; a long brewing tradition.",
+   "Festivals": "Oktoberfest, Christmas markets, Carnival (Karneval/Fasching).",
+   "Music & dance": "Bach, Beethoven, Brahms and Wagner; electronic music scene in Berlin.",
+   "Sports": "Football: four men's FIFA World Cups (1954, 1974, 1990, 2014). Motorsport, handball and winter sports are popular.",
+   "UNESCO World Heritage": "Includes Cologne Cathedral, Museum Island in Berlin, the Wadden Sea and the Upper Middle Rhine Valley."
   },
-  "tourism": ["Berlin","Neuschwanstein Castle","Munich","Rhine Valley","Black Forest","Cologne Cathedral","Dresden","Heidelberg"],
-  "history": [["800","Charlemagne crowned emperor"],["c. 1450","Gutenberg's movable-type printing press in Mainz"],["1517","Martin Luther's Reformation"],["1871","German Empire unified"],["1919","Weimar Republic"],["1933–1945","Nazi dictatorship, the Holocaust and World War II"],["1949","Federal Republic (West) and GDR (East) founded"],["9 Nov 1989","Fall of the Berlin Wall"],["3 Oct 1990","Reunification"]],
+  "tourism": [
+   "Berlin",
+   "Neuschwanstein Castle",
+   "Munich",
+   "Rhine Valley",
+   "Black Forest",
+   "Cologne Cathedral",
+   "Dresden",
+   "Heidelberg"
+  ],
+  "history": [
+   [
+    "800",
+    "Charlemagne crowned emperor"
+   ],
+   [
+    "c. 1450",
+    "Gutenberg's movable-type printing press in Mainz"
+   ],
+   [
+    "1517",
+    "Martin Luther's Reformation"
+   ],
+   [
+    "1871",
+    "German Empire unified"
+   ],
+   [
+    "1919",
+    "Weimar Republic"
+   ],
+   [
+    "1933–1945",
+    "Nazi dictatorship, the Holocaust and World War II"
+   ],
+   [
+    "1949",
+    "Federal Republic (West) and GDR (East) founded"
+   ],
+   [
+    "9 Nov 1989",
+    "Fall of the Berlin Wall"
+   ],
+   [
+    "3 Oct 1990",
+    "Reunification"
+   ]
+  ],
   "india": {
-    "Relationship": "Strategic Partnership (2000); Intergovernmental Consultations held at head-of-government level.",
-    "Key agreements": "Green and Sustainable Development Partnership (2022) · Migration and Mobility Partnership Agreement (2022)",
-    "Trade": "India's largest trading partner within the European Union.",
-    "People": "A fast-growing Indian student and skilled-worker community in Germany."
+   "Relationship": "Strategic Partnership (2000); Intergovernmental Consultations held at head-of-government level.",
+   "Key agreements": "Green and Sustainable Development Partnership (2022) · Migration and Mobility Partnership Agreement (2022)",
+   "Trade": "India's largest trading partner within the European Union. India–EU free trade agreement negotiations concluded on 27 January 2026.",
+   "People": "A fast-growing Indian student and skilled-worker community in Germany."
   },
-  "facts": ["Gutenberg's press (c. 1450) began the age of mass printing.","Some Autobahn stretches have no general speed limit.","Dresden's Striezelmarkt, first held in 1434, is one of the oldest Christmas markets."]
-}
+  "facts": [
+   "Gutenberg's press (c. 1450) began the age of mass printing.",
+   "Some Autobahn stretches have no general speed limit.",
+   "Dresden's Striezelmarkt, first held in 1434, is one of the oldest Christmas markets."
+  ]
+ }
 }

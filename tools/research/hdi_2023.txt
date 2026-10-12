@@ -1,0 +1,193 @@
+1|Iceland|0.972
+2|Norway|0.970
+2|Switzerland|0.970
+4|Denmark|0.962
+5|Germany|0.959
+5|Sweden|0.959
+7|Australia|0.958
+8|Hong Kong, China (SAR)|0.955
+8|Netherlands|0.955
+10|Belgium|0.951
+11|Ireland|0.949
+12|Finland|0.948
+13|Singapore|0.946
+13|United Kingdom|0.946
+15|United Arab Emirates|0.940
+16|Canada|0.939
+17|Liechtenstein|0.938
+17|New Zealand|0.938
+17|United States|0.938
+20|Korea (Republic of)|0.937
+21|Slovenia|0.931
+22|Austria|0.930
+23|Japan|0.925
+24|Malta|0.924
+25|Luxembourg|0.922
+26|France|0.920
+27|Israel|0.919
+28|Spain|0.918
+29|Czechia|0.915
+29|Italy|0.915
+29|San Marino|0.915
+32|Andorra|0.913
+32|Cyprus|0.913
+34|Greece|0.908
+35|Poland|0.906
+36|Estonia|0.905
+37|Saudi Arabia|0.900
+38|Bahrain|0.899
+39|Lithuania|0.895
+40|Portugal|0.890
+41|Croatia|0.889
+41|Latvia|0.889
+43|Qatar|0.886
+44|Slovakia|0.880
+45|Chile|0.878
+46|Hungary|0.870
+47|Argentina|0.865
+48|Montenegro|0.862
+48|Uruguay|0.862
+50|Oman|0.858
+51|Türkiye|0.853
+52|Kuwait|0.852
+53|Antigua and Barbuda|0.851
+54|Seychelles|0.848
+55|Bulgaria|0.845
+55|Romania|0.845
+57|Georgia|0.844
+58|Saint Kitts and Nevis|0.840
+59|Panama|0.839
+60|Brunei Darussalam|0.837
+60|Kazakhstan|0.837
+62|Costa Rica|0.833
+62|Serbia|0.833
+64|Russian Federation|0.832
+65|Belarus|0.824
+66|Bahamas|0.820
+67|Malaysia|0.819
+68|North Macedonia|0.815
+69|Armenia|0.811
+69|Barbados|0.811
+71|Albania|0.810
+72|Trinidad and Tobago|0.807
+73|Mauritius|0.806
+74|Bosnia and Herzegovina|0.804
+75|Iran (Islamic Republic of)|0.799
+76|Saint Vincent and the Grenadines|0.798
+76|Thailand|0.798
+78|China|0.797
+79|Peru|0.794
+80|Grenada|0.791
+81|Azerbaijan|0.789
+81|Mexico|0.789
+83|Colombia|0.788
+84|Brazil|0.786
+84|Palau|0.786
+86|Moldova (Republic of)|0.785
+87|Ukraine|0.779
+88|Ecuador|0.777
+89|Dominican Republic|0.776
+89|Guyana|0.776
+89|Sri Lanka|0.776
+92|Tonga|0.769
+93|Maldives|0.766
+93|Viet Nam|0.766
+95|Turkmenistan|0.764
+96|Algeria|0.763
+97|Cuba|0.762
+98|Dominica|0.761
+99|Paraguay|0.756
+100|Egypt|0.754
+100|Jordan|0.754
+102|Lebanon|0.752
+103|Saint Lucia|0.748
+104|Mongolia|0.747
+105|Tunisia|0.746
+106|South Africa|0.741
+107|Uzbekistan|0.740
+108|Bolivia (Plurinational State of)|0.733
+108|Gabon|0.733
+108|Marshall Islands|0.733
+111|Botswana|0.731
+111|Fiji|0.731
+113|Indonesia|0.728
+114|Suriname|0.722
+115|Belize|0.721
+115|Libya|0.721
+117|Jamaica|0.720
+117|Kyrgyzstan|0.720
+117|Philippines|0.720
+120|Morocco|0.710
+121|Venezuela (Bolivarian Republic of)|0.709
+122|Samoa|0.708
+123|Nicaragua|0.706
+124|Nauru|0.703
+125|Bhutan|0.698
+126|Eswatini (Kingdom of)|0.695
+126|Iraq|0.695
+128|Tajikistan|0.691
+129|Tuvalu|0.689
+130|Bangladesh|0.685
+130|India|0.685
+132|El Salvador|0.678
+133|Equatorial Guinea|0.674
+133|Palestine, State of|0.674
+135|Cabo Verde|0.668
+136|Namibia|0.665
+137|Guatemala|0.662
+138|Congo|0.649
+139|Honduras|0.645
+140|Kiribati|0.644
+141|Sao Tome and Principe|0.637
+142|Timor-Leste|0.634
+143|Ghana|0.628
+143|Kenya|0.628
+145|Nepal|0.622
+146|Vanuatu|0.621
+147|Lao People's Democratic Republic|0.617
+148|Angola|0.616
+149|Micronesia (Federated States of)|0.615
+150|Myanmar|0.609
+151|Cambodia|0.606
+152|Comoros|0.603
+153|Zimbabwe|0.598
+154|Zambia|0.595
+155|Cameroon|0.588
+156|Solomon Islands|0.584
+157|Côte d'Ivoire|0.582
+157|Uganda|0.582
+159|Rwanda|0.578
+160|Papua New Guinea|0.576
+161|Togo|0.571
+162|Syrian Arab Republic|0.564
+163|Mauritania|0.563
+164|Nigeria|0.560
+165|Tanzania (United Republic of)|0.555
+166|Haiti|0.554
+167|Lesotho|0.550
+168|Pakistan|0.544
+169|Senegal|0.530
+170|Gambia|0.524
+171|Congo (Democratic Republic of the)|0.522
+172|Malawi|0.517
+173|Benin|0.515
+174|Guinea-Bissau|0.514
+175|Djibouti|0.513
+176|Sudan|0.511
+177|Liberia|0.510
+178|Eritrea|0.503
+179|Guinea|0.500
+180|Ethiopia|0.497
+181|Afghanistan|0.496
+182|Mozambique|0.493
+183|Madagascar|0.487
+184|Yemen|0.470
+185|Sierra Leone|0.467
+186|Burkina Faso|0.459
+187|Burundi|0.439
+188|Mali|0.419
+188|Niger|0.419
+190|Chad|0.416
+191|Central African Republic|0.414
+192|Somalia|0.404
+193|South Sudan|0.388

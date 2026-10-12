@@ -2,7 +2,7 @@ import json, glob, re, html, sys, os
 FB=sys.argv[1]; WC=sys.argv[2]
 wc=json.load(open(WC))
 bytld={}
-for c in wc:
+for c in sorted(wc,key=lambda c:(not c.get('unMember'),not c.get('independent'))):
     for t in c.get('tld',[]): bytld.setdefault(t.lower(),c['cca3'])
 byname={c['name']['common'].lower():c['cca3'] for c in wc}
 for c in wc:
@@ -38,8 +38,8 @@ for f in glob.glob(FB+'/*/*.json'):
     except: tld=None
     try: nm=html.unescape(d['Government']['Country name']['conventional short form']['text']).lower()
     except: nm=None
-    k=bytld.get(tld) if tld and tld!='none' else None
-    if not k and nm: k=byname.get(nm)
+    k=byname.get(nm) if nm else None
+    if not k: k=bytld.get(tld) if tld and tld!='none' else None
     if not k: unmatched.append((f.split('/')[-1],nm,tld)); continue
     rec={}
     for tab,fields in SPEC.items():
@@ -49,8 +49,13 @@ for f in glob.glob(FB+'/*/*.json'):
             t=txt(v,n) if v else None
             if t and t.upper()!='NA': rows.append([fld,t])
         if rows: rec[tab]=rows
+    def raw(sec,fld,sub=None):
+        v=d.get(sec,{}).get(fld)
+        if v and sub: v=v.get(sub)
+        return html.unescape(v['text']) if isinstance(v,dict) and isinstance(v.get('text'),str) else None
+    rec['_m']={'capll':raw('Government','Capital','geographic coordinates'),'gdpoff':raw('Economy','GDP (official exchange rate)'),'gini':json.dumps(d.get('Economy',{}).get('Gini Index coefficient - distribution of family income',{}))}
     if k in out and len(json.dumps(out[k]))>len(json.dumps(rec)): continue
     out[k]=rec
-json.dump(out,open('factbook.json','w'),ensure_ascii=False,separators=(',',':'))
-print(len(out),'matched; size',os.path.getsize('factbook.json'))
+json.dump(out,open('/home/claude/build/factbook.json','w'),ensure_ascii=False,separators=(',',':'))
+print(len(out),'matched; size',os.path.getsize('/home/claude/build/factbook.json'))
 print('unmatched',unmatched)

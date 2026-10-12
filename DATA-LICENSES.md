@@ -6,6 +6,10 @@
 | Country reference data (names, codes, capitals, currencies, borders, area) | mledoze/countries (world-countries) | ODbL 1.0 |
 | Population, GDP | World Bank, via github.com/datasets/population and github.com/datasets/gdp | CC BY 4.0 |
 | Country profile text | CIA World Factbook (final edition, Feb 2026), via factbook/factbook.json | Public domain (US Government work) |
+| Human Development Index | UNDP Human Development Report 2025 | Free use with attribution |
+| Live: officeholders, emblems, anthem audio | Wikidata (CC0), Wikimedia Commons (per-file licences) | Shown at runtime only |
+| Live: weather | Open-Meteo | CC BY 4.0 |
+| Live: exchange rates | open.er-api.com (ExchangeRate-API) | Free tier, attribution |
 | Flags | lipis/flag-icons | MIT |
 | Time zones | manuelmhtr/countries-and-timezones | MIT |
 | Curated profiles, groupings, chokepoints, corridors, lexicon, translations | WorldView Atlas authors | MIT (with this repository) |

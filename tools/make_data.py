@@ -29,7 +29,7 @@ for c in wc:
       fl=c.get('flag'),
       pop=[int(p[py]),py] if py else None, gdp=[round(g[gy]/1e9,2),gy] if gy else None, pc=[pc,gy] if pc else None,
       gt=gtrend, pt=ptrend)
-json.dump(out,open('countries.json','w'),ensure_ascii=False,separators=(',',':'))
+json.dump(out,open('/home/claude/build/countries.json','w'),ensure_ascii=False,separators=(',',':'))
 print(len(out), sum(1 for v in out.values() if v['pop']), sum(1 for v in out.values() if v['gdp']))
 print(out['IND']['pop'],out['IND']['gdp'],out['IND']['pc'],out['IND']['cc'])
 # atlas id check

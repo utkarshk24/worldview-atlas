@@ -1,7 +1,7 @@
 // Groupings (membership as of mid-2026), chokepoints, corridors
 window.WV_GROUPS = {
 QUAD:{n:{en:"Quad",hi:"क्वाड",mr:"क्वाड"},f:"Quadrilateral Security Dialogue",m:["IND","USA","JPN","AUS"]},
-BRICS:{n:{en:"BRICS",hi:"ब्रिक्स",mr:"ब्रिक्स"},f:"BRICS (Saudi Arabia invited; participation unconfirmed)",m:["BRA","RUS","IND","CHN","ZAF","EGY","ETH","IRN","ARE","IDN"]},
+BRICS:{n:{en:"BRICS",hi:"ब्रिक्स",mr:"ब्रिक्स"},f:"BRICS. India holds the 2026 chair (summit in New Delhi, 12–13 Sep 2026). Saudi Arabia is listed by some sources but has not formally confirmed full membership.",m:["BRA","RUS","IND","CHN","ZAF","EGY","ETH","IRN","ARE","IDN"]},
 SCO:{n:{en:"SCO",hi:"SCO",mr:"SCO"},f:"Shanghai Cooperation Organisation",m:["CHN","IND","KAZ","KGZ","RUS","TJK","UZB","PAK","IRN","BLR"]},
 G20:{n:{en:"G20",hi:"G20",mr:"G20"},f:"Group of Twenty (plus the EU and African Union)",m:["ARG","AUS","BRA","CAN","CHN","FRA","DEU","IND","IDN","ITA","JPN","MEX","RUS","SAU","ZAF","KOR","TUR","GBR","USA"]},
 I2U2:{n:{en:"I2U2",hi:"I2U2",mr:"I2U2"},f:"India–Israel–UAE–USA",m:["IND","ISR","ARE","USA"]},
@@ -9,7 +9,7 @@ IMEC:{n:{en:"IMEC",hi:"IMEC",mr:"IMEC"},f:"India–Middle East–Europe Economic
 BIMSTEC:{n:{en:"BIMSTEC",hi:"बिम्सटेक",mr:"बिमस्टेक"},f:"Bay of Bengal Initiative for Multi-Sectoral Technical and Economic Cooperation",m:["BGD","BTN","IND","MMR","NPL","LKA","THA"]},
 SAARC:{n:{en:"SAARC",hi:"सार्क",mr:"सार्क"},f:"South Asian Association for Regional Cooperation",m:["AFG","BGD","BTN","IND","MDV","NPL","PAK","LKA"]},
 IORA:{n:{en:"IORA",hi:"IORA",mr:"IORA"},f:"Indian Ocean Rim Association",m:["AUS","BGD","COM","FRA","IND","IDN","IRN","KEN","MDG","MYS","MDV","MUS","MOZ","OMN","SYC","SGP","SOM","ZAF","LKA","TZA","THA","ARE","YEM"]},
-CSC:{n:{en:"Colombo Security Conclave",hi:"कोलंबो सुरक्षा सम्मेलन",mr:"कोलंबो सुरक्षा परिषद"},f:"Colombo Security Conclave",m:["IND","LKA","MDV","MUS","BGD"]},
+CSC:{n:{en:"Colombo Security Conclave",hi:"कोलंबो सुरक्षा सम्मेलन",mr:"कोलंबो सुरक्षा परिषद"},f:"Colombo Security Conclave (Seychelles joined November 2025)",m:["IND","LKA","MDV","MUS","BGD","SYC"]},
 ASEAN:{n:{en:"ASEAN",hi:"आसियान",mr:"आसियान"},f:"Association of Southeast Asian Nations (India: Comprehensive Strategic Partner)",m:["BRN","KHM","IDN","LAO","MYS","MMR","PHL","SGP","THA","VNM","TLS"],x:true},
 G7:{n:{en:"G7",hi:"G7",mr:"G7"},f:"Group of Seven",m:["CAN","FRA","DEU","ITA","JPN","GBR","USA"],x:true},
 EU:{n:{en:"EU",hi:"यूरोपीय संघ",mr:"युरोपियन युनियन"},f:"European Union",m:["AUT","BEL","BGR","HRV","CYP","CZE","DNK","EST","FIN","FRA","DEU","GRC","HUN","IRL","ITA","LVA","LTU","LUX","MLT","NLD","POL","PRT","ROU","SVK","SVN","ESP","SWE"],x:true},
