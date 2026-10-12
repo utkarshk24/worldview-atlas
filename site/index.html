@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WorldView Atlas</title>
+<meta name="description" content="WorldView Atlas: an interactive world map with country profiles, India-lens strategic layers (Quad, BRICS, SCO, IMEC, chokepoints) and an English, Hindi and Marathi interface.">
+<meta property="og:title" content="WorldView Atlas">
+<meta property="og:description" content="Click any country for a structured profile. Switch on the India Lens for groupings, corridors and maritime chokepoints.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#08111d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%2308111d'/%3E%3Cpath d='M4 16h24M16 2c5 5 5 23 0 28M16 2c-5 5-5 23 0 28' stroke='%23f2a246' stroke-width='2' fill='none'/%3E%3C/svg%3E">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<script>window.WV_BASE="data/";</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Mukta:wght@400;500;600;700&family=Tiro+Devanagari+Hindi:ital@0;1&family=Tiro+Devanagari+Marathi&display=swap">
+<style>
+/* Layout: full-bleed chart-room map; floating glass control panel left, profile drawer right (bottom sheet on phones) */
+:root{
+  --bg:#eef2f5; --sea:#d5e2ea; --land:#fbfcfd; --line:#9bb0c2; --grat:#c4d4df;
+  --fg:#122230; --muted:#566a7c; --faint:#8396a7;
+  --panel:rgba(250,252,253,.86); --panel-solid:#f8fafb; --edge:rgba(18,34,48,.12); --chip:#e3eaf0;
+  --accent:#b85a07; --accent-soft:rgba(184,90,7,.14); --accent-fg:#fff;
+  --green:#18794e; --navy:#1d3a5f; --corr:#0f7a72; --corr2:#6a4fc4; --lane:#5c7a93;
+  --seq0:#e7edf2; --seq1:#1d4e7a;
+  --r-af:#c58b52; --r-am:#5a8db5; --r-as:#c46b5e; --r-eu:#7c8fc9; --r-oc:#4ea38c; --r-an:#a7b4bf;
+  --shadow:0 10px 30px rgba(18,34,48,.14);
+  --f-display:"Tiro Devanagari Hindi","Iowan Old Style","Georgia",serif;
+  --f-body:"Mukta","Segoe UI",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --hdr:60px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#08111d; --sea:#0c1828; --land:#18283c; --line:#34506d; --grat:#14243a;
+  --fg:#e5edf5; --muted:#93a8bd; --faint:#647c93;
+  --panel:rgba(14,26,42,.84); --panel-solid:#0f1d2f; --edge:rgba(229,237,245,.12); --chip:#1c2f46;
+  --accent:#f2a246; --accent-soft:rgba(242,162,70,.18); --accent-fg:#1a1004;
+  --green:#45c08a; --navy:#9cc1e8; --corr:#3cc7b8; --corr2:#a996f2; --lane:#7d9bb6;
+  --seq0:#1a2b40; --seq1:#9ccdf2;
+  --r-af:#b9874f; --r-am:#5f93bd; --r-as:#c7766a; --r-eu:#8494d0; --r-oc:#51a891; --r-an:#5a6c7d;
+  --shadow:0 12px 34px rgba(0,0,0,.45); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#08111d; --sea:#0c1828; --land:#18283c; --line:#34506d; --grat:#14243a;
+  --fg:#e5edf5; --muted:#93a8bd; --faint:#647c93;
+  --panel:rgba(14,26,42,.84); --panel-solid:#0f1d2f; --edge:rgba(229,237,245,.12); --chip:#1c2f46;
+  --accent:#f2a246; --accent-soft:rgba(242,162,70,.18); --accent-fg:#1a1004;
+  --green:#45c08a; --navy:#9cc1e8; --corr:#3cc7b8; --corr2:#a996f2; --lane:#7d9bb6;
+  --seq0:#1a2b40; --seq1:#9ccdf2;
+  --r-af:#b9874f; --r-am:#5f93bd; --r-as:#c7766a; --r-eu:#8494d0; --r-oc:#51a891; --r-an:#5a6c7d;
+  --shadow:0 12px 34px rgba(0,0,0,.45); color-scheme:dark}
+:lang(mr) {--f-display:"Tiro Devanagari Marathi","Tiro Devanagari Hindi","Georgia",serif}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5;overflow:hidden}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+/* Header */
+.top{position:fixed;inset:0 0 auto 0;z-index:30;display:flex;align-items:center;gap:16px;padding:10px 16px;padding-top:calc(10px + env(safe-area-inset-top,0px));min-height:var(--hdr);background:linear-gradient(var(--bg),color-mix(in srgb,var(--bg) 70%,transparent));}
+.brand{display:flex;align-items:baseline;gap:10px;white-space:nowrap}
+.brand b{font-family:var(--f-display);font-weight:400;font-size:26px;letter-spacing:.01em}
+.brand b i{color:var(--accent);font-style:normal}
+.brand span{color:var(--muted);font-size:13px}
+.search{position:relative;flex:1;max-width:520px;margin-inline:auto}
+.search input{width:100%;padding:9px 14px 9px 38px;border-radius:999px;border:1px solid var(--edge);background:var(--panel);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:var(--shadow)}
+.search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--muted);fill:none}
+.search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--f-mono);font-size:11px;color:var(--faint);border:1px solid var(--edge);border-radius:5px;padding:0 5px}
+#qres{position:absolute;top:calc(100% + 6px);left:0;right:0;margin:0;padding:6px;list-style:none;background:var(--panel-solid);border:1px solid var(--edge);border-radius:14px;box-shadow:var(--shadow);max-height:360px;overflow:auto}
+#qres li{display:flex;gap:10px;align-items:center;padding:7px 10px;border-radius:9px;cursor:pointer}
+#qres li[aria-selected="true"],#qres li:hover{background:var(--accent-soft)}
+#qres li small{color:var(--muted);margin-left:auto;font-family:var(--f-mono);font-size:11px}
+.tools{display:flex;gap:8px;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--edge);border-radius:999px;background:var(--panel);padding:2px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.seg button{border:0;background:transparent;padding:5px 11px;border-radius:999px;font-size:13px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.icon-btn{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--edge);background:var(--panel);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.icon-btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8}
+
+/* Map */
+#stage{position:fixed;inset:0}
+#map{width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+#map:active{cursor:grabbing}
+.sea{fill:var(--sea)}
+.grat{fill:none;stroke:var(--grat);stroke-width:.6;vector-effect:non-scaling-stroke}
+.ctry{stroke:var(--line);stroke-width:.5;vector-effect:non-scaling-stroke;transition:fill .35s,opacity .25s;cursor:pointer}
+.ctry:hover{stroke:var(--fg);stroke-width:1.2}
+.ctry.sel{stroke:var(--accent);stroke-width:2.2}
+.ctry.dim{opacity:.35}
+.ctry.special{fill-opacity:.55}
+.lane{fill:none;stroke:var(--lane);stroke-width:1.4;stroke-dasharray:2 4;vector-effect:non-scaling-stroke;opacity:.9}
+.leg-sea{fill:none;stroke:var(--corr);stroke-width:2.2;stroke-dasharray:6 4;vector-effect:non-scaling-stroke}
+.leg-rail{fill:none;stroke:var(--corr);stroke-width:2.6;vector-effect:non-scaling-stroke}
+.instc .leg-sea,.instc .leg-rail{stroke:var(--corr2)}
+.choke circle.core{fill:var(--accent);stroke:var(--bg);stroke-width:1.5;vector-effect:non-scaling-stroke}
+.choke circle.ring{fill:none;stroke:var(--accent);stroke-width:1.2;vector-effect:non-scaling-stroke;opacity:.6;animation:pulse 2.6s ease-out infinite;transform-box:fill-box;transform-origin:center}
+.choke{cursor:pointer}
+.port circle{fill:var(--corr2);stroke:var(--bg);stroke-width:1.2;vector-effect:non-scaling-stroke}
+@keyframes pulse{0%{transform:scale(.6);opacity:.8}100%{transform:scale(2.4);opacity:0}}
+@media (prefers-reduced-motion:reduce){.choke circle.ring{animation:none}.ctry{transition:none}}
+#tip{position:fixed;z-index:25;pointer-events:none;background:var(--panel-solid);border:1px solid var(--edge);border-radius:10px;padding:6px 10px;box-shadow:var(--shadow);font-size:13px;max-width:280px}
+#tip b{display:block;font-weight:600}
+#tip span{color:var(--muted)}
+.mapctl{position:fixed;right:16px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:20;display:flex;flex-direction:column;gap:6px}
+#legend{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;background:var(--panel);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--edge);border-radius:12px;padding:10px 12px;font-size:12px;min-width:220px;max-width:min(320px,calc(100vw - 32px));box-shadow:var(--shadow)}
+#legend h4{margin:0 0 6px;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+#legend .ramp{height:9px;border-radius:5px}
+#legend .ends{display:flex;justify-content:space-between;margin-top:4px;font-family:var(--f-mono);font-size:11px}
+#legend .cats{display:flex;flex-wrap:wrap;gap:4px 12px}
+#legend .cats i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+#legend .src{margin-top:6px;color:var(--faint);font-size:11px}
+#hint{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:19;color:var(--muted);font-size:13px;background:var(--panel);border:1px solid var(--edge);border-radius:999px;padding:5px 14px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+
+/* Left panel */
+#panel{position:fixed;z-index:22;left:16px;top:calc(var(--hdr) + 12px + env(safe-area-inset-top,0px));width:328px;max-height:calc(100% - var(--hdr) - 210px);display:flex;flex-direction:column;background:var(--panel);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--edge);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.ptabs{display:flex;border-bottom:1px solid var(--edge)}
+.ptabs button{flex:1;border:0;background:none;padding:10px 6px;font-size:13.5px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px}
+.ptabs button[aria-selected="true"]{color:var(--fg);border-color:var(--accent);font-weight:600}
+.ptabs button.lensTab[aria-selected="true"]{color:var(--accent)}
+.pbody{overflow:auto;padding:14px;display:flex;flex-direction:column;gap:16px}
+.grp{display:flex;flex-direction:column;gap:8px}
+.lbl{font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--edge);background:var(--chip);border-radius:999px;padding:4px 11px;font-size:13px;display:inline-flex;align-items:center;gap:6px}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.chip.lensc[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.chip .x{opacity:.6}
+.toggle{display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer}
+.toggle input{appearance:none;width:32px;height:18px;border-radius:999px;background:var(--chip);border:1px solid var(--edge);position:relative;flex:none;cursor:pointer;transition:background .2s}
+.toggle input::after{content:"";position:absolute;width:12px;height:12px;border-radius:50%;background:var(--muted);top:2px;left:2px;transition:transform .2s,background .2s}
+.toggle input:checked{background:var(--accent)}
+.toggle input:checked::after{transform:translateX(14px);background:var(--accent-fg)}
+.swatch{width:18px;height:3px;border-radius:2px;display:inline-block;margin-left:auto}
+.note{font-size:12.5px;color:var(--muted);line-height:1.45}
+.list{display:flex;flex-direction:column}
+.list button{display:flex;gap:10px;align-items:baseline;text-align:left;border:0;background:none;padding:7px 4px;border-bottom:1px solid var(--edge)}
+.list button:hover{background:var(--accent-soft)}
+.list button span{flex:1;min-width:0}
+.list button small{color:var(--muted);font-size:12px;display:block;line-height:1.35}
+table.mx{width:100%;border-collapse:collapse;font-size:13px}
+table.mx th{font-weight:600;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);text-align:left;padding:6px 4px;border-bottom:1px solid var(--edge);cursor:pointer;white-space:nowrap;position:sticky;top:0;background:var(--panel-solid)}
+table.mx td{padding:5px 4px;border-bottom:1px solid var(--edge)}
+table.mx tr{cursor:pointer}
+table.mx tr:hover td{background:var(--accent-soft)}
+.mxwrap{max-height:280px;overflow:auto;border:1px solid var(--edge);border-radius:10px}
+.lex{display:flex;flex-direction:column;gap:8px}
+.lex div{border-bottom:1px solid var(--edge);padding-bottom:7px}
+.lex b{display:block;font-weight:600;font-size:13.5px}
+.lex span{font-size:13.5px;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none;transform:translateY(-1px)}
+
+/* Drawer */
+#drawer{position:fixed;z-index:28;top:calc(var(--hdr) + 8px + env(safe-area-inset-top,0px));right:16px;bottom:16px;width:min(560px,calc(100vw - 32px));display:flex;flex-direction:column;background:var(--panel-solid);border:1px solid var(--edge);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;transform:translateX(0);transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .25s}
+#drawer.closing{transform:translateX(110%);opacity:0}
+@media (prefers-reduced-motion:reduce){#drawer{transition:none}}
+.hero{position:relative;padding:18px 20px 14px;overflow:hidden;border-bottom:1px solid var(--edge);flex:none}
+.hero .bgflag{position:absolute;inset:-30%;filter:blur(38px) saturate(1.2);opacity:.32;pointer-events:none}
+.hero .bgflag img{width:100%;height:100%;object-fit:cover;max-width:none}
+.hero .row{position:relative;display:flex;gap:16px;align-items:center}
+.flagbox{width:92px;aspect-ratio:4/3;border-radius:8px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.25);flex:none;background:var(--chip);display:grid;place-items:center;font-size:44px;max-width:100%}
+.flagbox img{width:100%;height:100%;display:block;object-fit:cover}
+.flagbox.wave img{animation:wave 5s ease-in-out infinite;transform-origin:left center}
+@keyframes wave{0%,100%{transform:perspective(300px) rotateY(0) skewY(0)}50%{transform:perspective(300px) rotateY(-9deg) skewY(1.5deg)}}
+@media (prefers-reduced-motion:reduce){.flagbox.wave img{animation:none}}
+.hero h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:32px;line-height:1.1;text-wrap:balance}
+.hero .sub{color:var(--muted);font-size:13.5px;margin-top:3px}
+.hero .acts{position:relative;display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.act{border:1px solid var(--edge);background:var(--panel);border-radius:999px;padding:5px 12px;font-size:13px;display:inline-flex;gap:6px;align-items:center;text-decoration:none;color:var(--fg)}
+.act svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.9}
+.act[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.act[aria-pressed="true"] svg{fill:currentColor}
+.closeX{position:absolute;right:12px;top:12px;z-index:2}
+.stats{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:14px}
+.stat{background:var(--panel);border:1px solid var(--edge);border-radius:12px;padding:8px 10px;min-width:0}
+.stat .k{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.stat .v{font-family:var(--f-mono);font-size:15px;font-weight:500;overflow-wrap:anywhere;line-height:1.25;margin-top:2px}
+.stat .y{font-size:10.5px;color:var(--faint);font-family:var(--f-mono)}
+.dtabs{display:flex;gap:2px;overflow-x:auto;padding:0 12px;border-bottom:1px solid var(--edge);flex:none;scrollbar-width:thin}
+.dtabs button{border:0;background:none;padding:10px 10px;font-size:13.5px;color:var(--muted);white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px}
+.dtabs button[aria-selected="true"]{color:var(--fg);border-color:var(--fg);font-weight:600}
+.dtabs button.lensTab{color:var(--accent)}
+.dtabs button.lensTab[aria-selected="true"]{border-color:var(--accent)}
+.dbody{overflow:auto;padding:18px 20px 28px;display:flex;flex-direction:column;gap:22px;flex:1;min-height:0}
+.sec{display:flex;flex-direction:column;gap:10px;min-width:0}
+.sec>h3{margin:0;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{font-family:var(--f-mono);font-size:10.5px;letter-spacing:0;text-transform:none;font-weight:500;border-radius:999px;padding:1px 8px;border:1px solid var(--edge);color:var(--muted);background:var(--chip)}
+.badge.ok{color:var(--green);border-color:color-mix(in srgb,var(--green) 40%,transparent);background:color-mix(in srgb,var(--green) 10%,transparent)}
+.badge.warn{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,transparent);background:var(--accent-soft)}
+dl.kv{margin:0;display:grid;grid-template-columns:minmax(110px,34%) 1fr;gap:0;border-top:1px solid var(--edge)}
+dl.kv dt,dl.kv dd{margin:0;padding:8px 0;border-bottom:1px solid var(--edge);min-width:0}
+dl.kv dt{color:var(--muted);font-size:13px;padding-right:12px}
+dl.kv dd{font-size:14px;white-space:pre-line;overflow-wrap:anywhere}
+.clamp{display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+.morebtn{border:0;background:none;color:var(--accent);padding:2px 0;font-size:12.5px;font-weight:600}
+.prose{font-size:15px;line-height:1.6;max-width:65ch;white-space:pre-line}
+.bars{display:flex;flex-direction:column;gap:6px}
+.bar{display:grid;grid-template-columns:minmax(0,1fr) 54px;gap:4px 10px;align-items:center;font-size:13px}
+.bar .t{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar .p{font-family:var(--f-mono);text-align:right;font-size:12px}
+.bar .track{grid-column:1/-1;height:6px;border-radius:4px;background:var(--chip);overflow:hidden}
+.bar .fill{height:100%;background:var(--navy);border-radius:4px}
+.chart svg{width:100%;height:auto;display:block}
+.chart text{fill:var(--muted);font-family:var(--f-mono);font-size:10px}
+.chart .ln{fill:none;stroke:var(--navy);stroke-width:2}
+.chart .ar{fill:var(--navy);opacity:.12}
+.chart .gd{stroke:var(--edge);stroke-width:1}
+.chart .end{fill:var(--accent)}
+.tl{list-style:none;margin:0;padding:0 0 0 18px;border-left:2px solid var(--edge);display:flex;flex-direction:column;gap:12px}
+.tl li{position:relative}
+.tl li::before{content:"";position:absolute;left:-24px;top:7px;width:10px;height:10px;border-radius:50%;background:var(--panel-solid);border:2px solid var(--accent)}
+.tl .yr{font-family:var(--f-mono);font-size:12px;color:var(--accent)}
+.cities{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.city{border:1px solid var(--edge);border-radius:12px;padding:9px 11px;min-width:0}
+.city b{display:block;font-weight:600}
+.city span{font-size:12.5px;color:var(--muted)}
+.empty{border:1px dashed var(--edge);border-radius:14px;padding:16px;color:var(--muted);font-size:14px}
+.empty b{display:block;color:var(--fg);margin-bottom:4px}
+.lensbox{border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);background:var(--accent-soft);border-radius:14px;padding:12px 14px;font-size:13.5px}
+.metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.mg{border:1px solid var(--edge);border-radius:12px;padding:10px 12px;min-width:0}
+.mg .k{font-size:11.5px;color:var(--muted)}
+.mg .v{font-family:var(--f-mono);font-size:17px;margin-top:2px;overflow-wrap:anywhere}
+.mg .v.txt{font-family:var(--f-body);font-size:15px}
+.skel{height:14px;border-radius:7px;background:linear-gradient(90deg,var(--chip),var(--edge),var(--chip));background-size:200% 100%;animation:sk 1.2s linear infinite}
+@keyframes sk{to{background-position:-200% 0}}
+.foot{font-size:11.5px;color:var(--faint);border-top:1px solid var(--edge);padding-top:12px}
+.err{border:1px solid var(--accent);border-radius:12px;padding:12px;font-size:14px}
+
+/* Compare */
+#tray{position:fixed;z-index:29;left:50%;transform:translateX(-50%);top:calc(var(--hdr) + 12px + env(safe-area-inset-top,0px));display:flex;gap:8px;align-items:center;background:var(--panel-solid);border:1px solid var(--edge);border-radius:999px;padding:6px 6px 6px 14px;box-shadow:var(--shadow);max-width:calc(100vw - 32px);flex-wrap:wrap}
+.primary{border:0;background:var(--accent);color:var(--accent-fg);border-radius:999px;padding:6px 14px;font-weight:600;font-size:13.5px}
+.primary:disabled{opacity:.45;cursor:default}
+#modal{position:fixed;inset:0;z-index:40;background:rgba(5,10,18,.5);display:grid;place-items:center;padding:16px}
+.mcard{background:var(--panel-solid);border:1px solid var(--edge);border-radius:20px;box-shadow:var(--shadow);width:min(860px,100%);max-height:calc(100% - 32px);overflow:auto;padding:20px;position:relative}
+.mcard h2{font-family:var(--f-display);font-weight:400;font-size:28px;margin:0 0 12px}
+.ctab{width:100%;border-collapse:collapse;font-size:14px}
+.ctab th,.ctab td{padding:9px 10px;border-bottom:1px solid var(--edge);text-align:left;vertical-align:top}
+.ctab thead th{font-family:var(--f-display);font-weight:400;font-size:20px}
+.ctab tbody th{color:var(--muted);font-weight:500;font-size:13px;width:28%}
+.ctab td .mono{font-size:13.5px}
+.cbar{height:5px;border-radius:3px;background:var(--navy);margin-top:5px}
+.cwrap{overflow-x:auto}
+
+#loader{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:var(--bg)}
+#loader div{display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--muted)}
+#loader b{font-family:var(--f-display);font-weight:400;font-size:40px;color:var(--fg)}
+#loader b i{color:var(--accent);font-style:normal}
+#panelBtn{display:none}
+
+@media (max-width:820px){
+  .brand span{display:none}
+  .top{flex-wrap:wrap;gap:8px}
+  .search{order:3;flex-basis:100%;max-width:none}
+  .search kbd{display:none}
+  :root{--hdr:108px}
+  #panel{left:8px;right:8px;width:auto;top:auto;bottom:calc(8px + env(safe-area-inset-bottom,0px));max-height:62%}
+  #panel[data-open="false"]{display:none}
+  #panelBtn{display:grid;position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:21}
+  #legend{left:auto;right:64px;bottom:calc(16px + env(safe-area-inset-bottom,0px));min-width:0;max-width:calc(100vw - 140px)}
+  #hint{display:none}
+  #drawer{left:0;right:0;bottom:0;top:auto;width:auto;height:84%;border-radius:20px 20px 0 0;padding-bottom:env(safe-area-inset-bottom,0px)}
+  #drawer.closing{transform:translateY(110%)}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero h2{font-size:26px}
+  .flagbox{width:72px}
+  .cities,.metric-grid{grid-template-columns:1fr}
+  dl.kv{grid-template-columns:1fr}
+  dl.kv dt{border-bottom:0;padding-bottom:0}
+  #tray{top:auto;bottom:calc(64px + env(safe-area-inset-bottom,0px))}
+}
+</style>
+
+</head>
+<body>
+<div id="loader"><div><b>World<i>View</i></b><span id="loadMsg">Loading map…</span></div></div>
+
+<header class="top">
+  <div class="brand"><b>World<i>View</i></b><span id="tagline">Explore Every Nation</span></div>
+  <div class="search" role="search">
+    <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" type="search" autocomplete="off" spellcheck="false" aria-label="Search a country" aria-controls="qres">
+    <kbd>/</kbd>
+    <ul id="qres" role="listbox" hidden></ul>
+  </div>
+  <div class="tools">
+    <div class="seg" role="group" aria-label="Language">
+      <button data-lang="en" aria-pressed="true">EN</button><button data-lang="hi" aria-pressed="false" lang="hi">हिंदी</button><button data-lang="mr" aria-pressed="false" lang="mr">मराठी</button>
+    </div>
+    <button class="icon-btn" id="themeBtn" aria-label="Toggle theme"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+  </div>
+</header>
+
+<main id="stage"><svg id="map" role="img" aria-label="Interactive world map"></svg></main>
+<div id="tip" hidden></div>
+<div id="hint"></div>
+<div id="legend"></div>
+<div class="mapctl">
+  <button class="icon-btn" id="zIn" aria-label="Zoom in"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+  <button class="icon-btn" id="zOut" aria-label="Zoom out"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+  <button class="icon-btn" id="zReset" aria-label="Reset view"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4v4M12 16v4M4 12h4M16 12h4"/></svg></button>
+</div>
+<button class="icon-btn" id="panelBtn" aria-label="Layers and India Lens"><svg viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5z"/><path d="m3 13 9 5 9-5"/></svg></button>
+
+<aside id="panel" data-open="true" aria-label="Map controls">
+  <div class="ptabs" role="tablist">
+    <button role="tab" data-p="explore" aria-selected="true" id="pt-explore"></button>
+    <button role="tab" data-p="lens" aria-selected="false" class="lensTab" id="pt-lens"></button>
+    <button role="tab" data-p="library" aria-selected="false" id="pt-library"></button>
+  </div>
+  <div class="pbody" id="pbody"></div>
+</aside>
+
+<aside id="drawer" hidden aria-label="Country profile"></aside>
+<div id="tray" hidden></div>
+<div id="modal" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script>// UI strings in English, Hindi and Marathi
+window.WV_I18N = {
+en:{memberships:"Memberships",brand:"WorldView",tag:"Explore Every Nation",search:"Search a country…",explore:"Explore",lens:"India Lens",library:"Library",colorBy:"Colour map by",region:"Region",population:"Population",density:"Population density",area:"Area",gdp:"GDP",gdppc:"GDP per capita",shared:"Groupings shared with India",view:"View",map:"Map",globe:"Globe",bounds:"Boundaries",bInd:"India (official)",bGlob:"Global (de facto)",layers:"Strategic layers",lChoke:"Maritime chokepoints",lImec:"IMEC corridor",lInstc:"INSTC corridor",lLanes:"Indian Ocean sea lanes",highlight:"Highlight grouping",none:"None",fav:"Favourites",recent:"Recently viewed",emptyFav:"Star a country to keep it here.",emptyRecent:"Countries you open appear here.",compare:"Compare",addCompare:"Add to compare",inCompare:"In comparison",openCompare:"Open comparison",clear:"Clear",copy:"Copy summary",copied:"Copied",copyFail:"Select the text to copy",read:"Read aloud",stop:"Stop",close:"Close",capital:"Capital",notAvail:"Not available",source:"Source",verified:"Verified",fbNote:"CIA World Factbook, final edition (frozen Feb 2026). Leaders and elections may have changed since.",langNote:"Profile text is in English. Hindi and Marathi profile translations come with the Phase 3 translation pipeline.",clickHint:"Click any country to open its profile",tabs:{overview:"Overview",geography:"Geography",people:"People",government:"Government",economy:"Economy",foreign:"Foreign & Defence",culture:"Culture",history:"History",infra:"Infrastructure",india:"India Lens",facts:"Quick facts"},keyFacts:"Key facts",leadership:"Current leadership",cities:"Major cities",timeline:"Timeline",background:"Background",attractions:"Top attractions",notCurated:"Not yet curated",notCuratedBody:"Hand-curated culture, cuisine, sports and tourism content is available for India, the United States, Japan, Brazil and Germany. Other countries get it as the curation pipeline expands.",analytical:"Analytical perspective",sharedGroups:"Shared groupings",distance:"Distance from New Delhi",distNote:"to geographic centre",border:"Land border with India",ior:"Indian Ocean littoral (IORA)",nearChoke:"Nearest chokepoint",relNotes:"Relationship notes",feed:"Live event feed",feedBody:"Not connected. The Phase 3 pipeline (MEA, PIB, RSS and news APIs) will stream scored, translated events for this country here.",matrix:"Bilateral matrix",matrixNote:"Structural indicators only. Sentiment and MOU tracking arrive with the event pipeline.",lexicon:"Strategic lexicon",chokes:"Chokepoint monitor",corridors:"Corridors",popTrend:"Population trend",gdpTrend:"GDP trend (current US$, billions)",languages:"Languages",religions:"Religions",ethnic:"Ethnic groups",age:"Age structure",currency:"Currency",calling:"Calling code",tz:"Time zones",tld:"Internet domain",iso:"ISO 3166-1 codes",official:"Official name",native:"Native name",subregion:"Subregion",borders:"Neighbouring countries",landlocked:"Landlocked",un:"UN member",yes:"Yes",no:"No",wiki:"Wikipedia",anthemLink:"Listen on Wikipedia",loading:"Loading profile…",loadErr:"Couldn't load this data. Check your connection and try again.",retry:"Try again",more:"Show more",less:"Show less",special:"Disputed or special area",rank:"World rank",of:"of",perKm:"per km²",india:"India",members:"members",country:"Country",groups:"Groups",km:"km",noResults:"No matching country",self:"This is India. The lens shows India's own memberships, neighbours and corridors.",indiaGroups:"India's groupings",neighbours:"Land neighbours",factsEmpty:"No quick facts curated yet for this country.",dataNote:"Data: World Bank (population, GDP), CIA World Factbook final edition, Natural Earth boundaries, curated profiles verified 12 Oct 2026.",theme:"Theme",mapStudio:"Map",legendSrc:"Source",sameAs:"Same in both",lexTerm:"Term",mapEd:"Boundaries shown per the Survey of India official depiction.",mapEdG:"Boundaries shown as de facto lines of control (Natural Earth default).",wb:"World Bank"},
+hi:{memberships:"सदस्यताएँ",brand:"WorldView",tag:"हर राष्ट्र को जानें",search:"देश खोजें…",explore:"अन्वेषण",lens:"भारत दृष्टि",library:"संग्रह",colorBy:"मानचित्र का रंग",region:"क्षेत्र",population:"जनसंख्या",density:"जनसंख्या घनत्व",area:"क्षेत्रफल",gdp:"GDP",gdppc:"प्रति व्यक्ति GDP",shared:"भारत के साथ साझा समूह",view:"दृश्य",map:"मानचित्र",globe:"ग्लोब",bounds:"सीमाएँ",bInd:"भारत (आधिकारिक)",bGlob:"वैश्विक (वास्तविक स्थिति)",layers:"सामरिक परतें",lChoke:"समुद्री चोकपॉइंट",lImec:"IMEC गलियारा",lInstc:"INSTC गलियारा",lLanes:"हिंद महासागर समुद्री मार्ग",highlight:"समूह दर्शाएँ",none:"कोई नहीं",fav:"पसंदीदा",recent:"हाल में देखे",emptyFav:"किसी देश को यहाँ रखने के लिए तारांकित करें।",emptyRecent:"आप जो देश खोलेंगे, वे यहाँ दिखेंगे।",compare:"तुलना",addCompare:"तुलना में जोड़ें",inCompare:"तुलना में है",openCompare:"तुलना देखें",clear:"हटाएँ",copy:"सारांश कॉपी करें",copied:"कॉपी हो गया",copyFail:"कॉपी करने के लिए पाठ चुनें",read:"पढ़कर सुनाएँ",stop:"रोकें",close:"बंद करें",capital:"राजधानी",notAvail:"उपलब्ध नहीं",source:"स्रोत",verified:"सत्यापित",fbNote:"CIA वर्ल्ड फ़ैक्टबुक, अंतिम संस्करण (फ़रवरी 2026 तक)। नेता और चुनाव तब से बदल चुके हो सकते हैं।",langNote:"प्रोफ़ाइल पाठ अंग्रेज़ी में है। हिंदी और मराठी अनुवाद चरण 3 की अनुवाद पाइपलाइन के साथ आएँगे।",clickHint:"प्रोफ़ाइल खोलने के लिए किसी भी देश पर क्लिक करें",tabs:{overview:"अवलोकन",geography:"भूगोल",people:"जनसंख्या",government:"सरकार",economy:"अर्थव्यवस्था",foreign:"विदेश व रक्षा",culture:"संस्कृति",history:"इतिहास",infra:"अवसंरचना",india:"भारत दृष्टि",facts:"रोचक तथ्य"},keyFacts:"मुख्य तथ्य",leadership:"वर्तमान नेतृत्व",cities:"प्रमुख शहर",timeline:"समयरेखा",background:"पृष्ठभूमि",attractions:"प्रमुख पर्यटन स्थल",notCurated:"अभी संकलित नहीं",notCuratedBody:"संस्कृति, व्यंजन, खेल और पर्यटन की संकलित सामग्री भारत, अमेरिका, जापान, ब्राज़ील और जर्मनी के लिए उपलब्ध है। संकलन बढ़ने के साथ अन्य देश जुड़ेंगे।",analytical:"विश्लेषणात्मक दृष्टिकोण",sharedGroups:"साझा समूह",distance:"नई दिल्ली से दूरी",distNote:"भौगोलिक केंद्र तक",border:"भारत से स्थल सीमा",ior:"हिंद महासागर तटीय देश (IORA)",nearChoke:"निकटतम चोकपॉइंट",relNotes:"संबंध टिप्पणियाँ",feed:"लाइव घटना फ़ीड",feedBody:"अभी जुड़ी नहीं है। चरण 3 की पाइपलाइन (MEA, PIB, RSS और समाचार API) इस देश की स्कोर की गई, अनूदित घटनाएँ यहाँ दिखाएगी।",matrix:"द्विपक्षीय मैट्रिक्स",matrixNote:"केवल संरचनात्मक संकेतक। भावना और MOU ट्रैकिंग घटना पाइपलाइन के साथ आएगी।",lexicon:"सामरिक शब्दकोश",chokes:"चोकपॉइंट निगरानी",corridors:"गलियारे",popTrend:"जनसंख्या प्रवृत्ति",gdpTrend:"GDP प्रवृत्ति (वर्तमान US$, बिलियन)",languages:"भाषाएँ",religions:"धर्म",ethnic:"जातीय समूह",age:"आयु संरचना",currency:"मुद्रा",calling:"कॉलिंग कोड",tz:"समय क्षेत्र",tld:"इंटरनेट डोमेन",iso:"ISO 3166-1 कोड",official:"आधिकारिक नाम",native:"स्थानीय नाम",subregion:"उपक्षेत्र",borders:"पड़ोसी देश",landlocked:"स्थलरुद्ध",un:"संयुक्त राष्ट्र सदस्य",yes:"हाँ",no:"नहीं",wiki:"विकिपीडिया",anthemLink:"विकिपीडिया पर सुनें",loading:"प्रोफ़ाइल लोड हो रही है…",loadErr:"यह डेटा लोड नहीं हो सका। कनेक्शन जाँचकर फिर कोशिश करें।",retry:"फिर कोशिश करें",more:"और दिखाएँ",less:"कम दिखाएँ",special:"विवादित या विशेष क्षेत्र",rank:"विश्व क्रम",of:"में से",perKm:"प्रति किमी²",india:"भारत",members:"सदस्य",country:"देश",groups:"समूह",km:"किमी",noResults:"कोई देश नहीं मिला",self:"यह भारत है। यह दृष्टि भारत की सदस्यताएँ, पड़ोसी और गलियारे दिखाती है।",indiaGroups:"भारत के समूह",neighbours:"स्थल पड़ोसी",factsEmpty:"इस देश के लिए अभी कोई रोचक तथ्य संकलित नहीं हैं।",dataNote:"डेटा: विश्व बैंक (जनसंख्या, GDP), CIA वर्ल्ड फ़ैक्टबुक अंतिम संस्करण, नैचुरल अर्थ सीमाएँ, संकलित प्रोफ़ाइल 12 अक्टूबर 2026 को सत्यापित।",theme:"थीम",mapStudio:"मानचित्र",legendSrc:"स्रोत",sameAs:"दोनों में समान",lexTerm:"शब्द",mapEd:"सीमाएँ भारतीय सर्वेक्षण विभाग के आधिकारिक मानचित्र के अनुसार।",mapEdG:"सीमाएँ वास्तविक नियंत्रण रेखाओं के अनुसार (नैचुरल अर्थ डिफ़ॉल्ट)।",wb:"विश्व बैंक"},
+mr:{memberships:"सदस्यत्व",brand:"WorldView",tag:"प्रत्येक राष्ट्र जाणून घ्या",search:"देश शोधा…",explore:"अन्वेषण",lens:"भारत दृष्टिकोन",library:"संग्रह",colorBy:"नकाशाचा रंग",region:"प्रदेश",population:"लोकसंख्या",density:"लोकसंख्येची घनता",area:"क्षेत्रफळ",gdp:"GDP",gdppc:"दरडोई GDP",shared:"भारतासोबत सामायिक गट",view:"दृश्य",map:"नकाशा",globe:"पृथ्वीगोल",bounds:"सीमा",bInd:"भारत (अधिकृत)",bGlob:"जागतिक (प्रत्यक्ष स्थिती)",layers:"सामरिक स्तर",lChoke:"सागरी चोकपॉइंट",lImec:"IMEC कॉरिडॉर",lInstc:"INSTC कॉरिडॉर",lLanes:"हिंद महासागरातील सागरी मार्ग",highlight:"गट दाखवा",none:"काहीही नाही",fav:"आवडते",recent:"अलीकडे पाहिलेले",emptyFav:"देश येथे ठेवण्यासाठी त्याला तारांकित करा.",emptyRecent:"तुम्ही उघडलेले देश येथे दिसतील.",compare:"तुलना",addCompare:"तुलनेत जोडा",inCompare:"तुलनेत आहे",openCompare:"तुलना पाहा",clear:"काढा",copy:"सारांश कॉपी करा",copied:"कॉपी झाले",copyFail:"कॉपी करण्यासाठी मजकूर निवडा",read:"वाचून दाखवा",stop:"थांबवा",close:"बंद करा",capital:"राजधानी",notAvail:"उपलब्ध नाही",source:"स्रोत",verified:"पडताळलेले",fbNote:"CIA वर्ल्ड फॅक्टबुक, अंतिम आवृत्ती (फेब्रुवारी 2026 पर्यंत). नेते व निवडणुका त्यानंतर बदललेल्या असू शकतात.",langNote:"प्रोफाइल मजकूर इंग्रजीत आहे. हिंदी व मराठी अनुवाद टप्पा 3 मधील अनुवाद पाइपलाइनसह येतील.",clickHint:"प्रोफाइल उघडण्यासाठी कोणत्याही देशावर क्लिक करा",tabs:{overview:"आढावा",geography:"भूगोल",people:"लोकसंख्या",government:"शासन",economy:"अर्थव्यवस्था",foreign:"परराष्ट्र व संरक्षण",culture:"संस्कृती",history:"इतिहास",infra:"पायाभूत सुविधा",india:"भारत दृष्टिकोन",facts:"रंजक तथ्ये"},keyFacts:"प्रमुख तथ्ये",leadership:"सद्य नेतृत्व",cities:"प्रमुख शहरे",timeline:"कालरेषा",background:"पार्श्वभूमी",attractions:"प्रमुख पर्यटनस्थळे",notCurated:"अद्याप संकलित नाही",notCuratedBody:"संस्कृती, खाद्यसंस्कृती, खेळ आणि पर्यटनाचा संकलित मजकूर भारत, अमेरिका, जपान, ब्राझील आणि जर्मनीसाठी उपलब्ध आहे. संकलन वाढेल तसे इतर देश जोडले जातील.",analytical:"विश्लेषणात्मक दृष्टिकोन",sharedGroups:"सामायिक गट",distance:"नवी दिल्लीपासून अंतर",distNote:"भौगोलिक केंद्रापर्यंत",border:"भारताशी भू-सीमा",ior:"हिंद महासागर किनारी देश (IORA)",nearChoke:"सर्वात जवळचा चोकपॉइंट",relNotes:"संबंधविषयक नोंदी",feed:"थेट घडामोडी फीड",feedBody:"अद्याप जोडलेले नाही. टप्पा 3 पाइपलाइन (MEA, PIB, RSS आणि बातम्यांचे API) या देशाच्या गुणांकित, अनुवादित घडामोडी येथे दाखवेल.",matrix:"द्विपक्षीय मॅट्रिक्स",matrixNote:"केवळ संरचनात्मक निर्देशक. भावना व MOU ट्रॅकिंग घडामोडी पाइपलाइनसह येईल.",lexicon:"सामरिक शब्दकोश",chokes:"चोकपॉइंट निरीक्षण",corridors:"कॉरिडॉर",popTrend:"लोकसंख्येचा कल",gdpTrend:"GDP कल (चालू US$, बिलियन)",languages:"भाषा",religions:"धर्म",ethnic:"वांशिक गट",age:"वयोरचना",currency:"चलन",calling:"कॉलिंग कोड",tz:"वेळ क्षेत्र",tld:"इंटरनेट डोमेन",iso:"ISO 3166-1 कोड",official:"अधिकृत नाव",native:"स्थानिक नाव",subregion:"उपप्रदेश",borders:"शेजारी देश",landlocked:"भूवेष्टित",un:"संयुक्त राष्ट्र सदस्य",yes:"होय",no:"नाही",wiki:"विकिपीडिया",anthemLink:"विकिपीडियावर ऐका",loading:"प्रोफाइल लोड होत आहे…",loadErr:"हा डेटा लोड झाला नाही. कनेक्शन तपासून पुन्हा प्रयत्न करा.",retry:"पुन्हा प्रयत्न करा",more:"अधिक दाखवा",less:"कमी दाखवा",special:"विवादित किंवा विशेष क्षेत्र",rank:"जागतिक क्रमांक",of:"पैकी",perKm:"प्रति किमी²",india:"भारत",members:"सदस्य",country:"देश",groups:"गट",km:"किमी",noResults:"जुळणारा देश सापडला नाही",self:"हा भारत आहे. हा दृष्टिकोन भारताचे सदस्यत्व, शेजारी आणि कॉरिडॉर दाखवतो.",indiaGroups:"भारताचे गट",neighbours:"भू-शेजारी",factsEmpty:"या देशासाठी अद्याप रंजक तथ्ये संकलित केलेली नाहीत.",dataNote:"डेटा: जागतिक बँक (लोकसंख्या, GDP), CIA वर्ल्ड फॅक्टबुक अंतिम आवृत्ती, नॅचरल अर्थ सीमा, संकलित प्रोफाइल 12 ऑक्टोबर 2026 रोजी पडताळले.",theme:"थीम",mapStudio:"नकाशा",legendSrc:"स्रोत",sameAs:"दोन्हींमध्ये सारखे",lexTerm:"संज्ञा",mapEd:"सीमा भारतीय सर्वेक्षण विभागाच्या अधिकृत नकाशानुसार.",mapEdG:"सीमा प्रत्यक्ष नियंत्रण रेषांनुसार (नॅचरल अर्थ डीफॉल्ट).",wb:"जागतिक बँक"}
+};
+
+// Factbook field labels
+window.WV_FL = {
+hi:{"Background":"पृष्ठभूमि","Country name":"देश का नाम","Capital":"राजधानी","Independence":"स्वतंत्रता","National holiday":"राष्ट्रीय अवकाश","National symbol(s)":"राष्ट्रीय प्रतीक","National color(s)":"राष्ट्रीय रंग","National anthem(s)":"राष्ट्रगान","Flag":"ध्वज","National heritage":"राष्ट्रीय धरोहर","Location":"स्थिति","Area":"क्षेत्रफल","Area - comparative":"तुलनात्मक क्षेत्रफल","Land boundaries":"स्थल सीमाएँ","Coastline":"तटरेखा","Climate":"जलवायु","Terrain":"भू-भाग","Elevation":"ऊँचाई","Natural resources":"प्राकृतिक संसाधन","Major rivers (by length in km)":"प्रमुख नदियाँ (लंबाई किमी में)","Major lakes (area sq km)":"प्रमुख झीलें (क्षेत्रफल वर्ग किमी)","Natural hazards":"प्राकृतिक आपदाएँ","Environmental issues":"पर्यावरणीय समस्याएँ","Geography - note":"भूगोल - टिप्पणी","Population":"जनसंख्या","Population growth rate":"जनसंख्या वृद्धि दर","Median age":"माध्य आयु","Age structure":"आयु संरचना","Ethnic groups":"जातीय समूह","Languages":"भाषाएँ","Religions":"धर्म","Urbanization":"शहरीकरण","Major urban areas - population":"प्रमुख शहरी क्षेत्र - जनसंख्या","Sex ratio":"लिंगानुपात","Literacy":"साक्षरता","Life expectancy at birth":"जन्म के समय जीवन प्रत्याशा","Infant mortality rate":"शिशु मृत्यु दर","Total fertility rate":"कुल प्रजनन दर","Physician density":"चिकित्सक घनत्व","Hospital bed density":"अस्पताल बिस्तर घनत्व","Health expenditure":"स्वास्थ्य व्यय","Education expenditure":"शिक्षा व्यय","School life expectancy (primary to tertiary education)":"विद्यालयी जीवन प्रत्याशा","Government type":"शासन प्रणाली","Executive branch":"कार्यपालिका","Legislative branch":"विधायिका","Legislative branch - lower chamber":"विधायिका - निचला सदन","Legislative branch - upper chamber":"विधायिका - उच्च सदन","Judicial branch":"न्यायपालिका","Political parties":"राजनीतिक दल","Administrative divisions":"प्रशासनिक विभाग","Constitution":"संविधान","Legal system":"विधि प्रणाली","Suffrage":"मताधिकार","Economic overview":"आर्थिक अवलोकन","Real GDP (purchasing power parity)":"वास्तविक GDP (क्रय शक्ति समता)","Real GDP growth rate":"वास्तविक GDP वृद्धि दर","Real GDP per capita":"प्रति व्यक्ति वास्तविक GDP","GDP (official exchange rate)":"GDP (आधिकारिक विनिमय दर)","Inflation rate (consumer prices)":"मुद्रास्फीति दर","GDP - composition, by sector of origin":"GDP - क्षेत्रवार संरचना","Industries":"उद्योग","Agricultural products":"कृषि उत्पाद","Unemployment rate":"बेरोज़गारी दर","Gini Index coefficient - distribution of family income":"गिनी सूचकांक","Exports":"निर्यात","Exports - partners":"निर्यात - साझेदार","Exports - commodities":"निर्यात - वस्तुएँ","Imports":"आयात","Imports - partners":"आयात - साझेदार","Imports - commodities":"आयात - वस्तुएँ","Public debt":"सार्वजनिक ऋण","Remittances":"प्रेषण","Exchange rates":"विनिमय दरें","International organization participation":"अंतरराष्ट्रीय संगठनों में भागीदारी","Military and security forces":"सैन्य व सुरक्षा बल","Military expenditures":"सैन्य व्यय","Military and security service personnel strengths":"सैन्य कर्मियों की संख्या","Military equipment inventories and acquisitions":"सैन्य उपकरण व खरीद","Military deployments":"सैन्य तैनाती","Military - note":"सैन्य - टिप्पणी","Refugees and internally displaced persons":"शरणार्थी व आंतरिक विस्थापित","Terrorist group(s)":"आतंकी समूह","Electricity access":"बिजली पहुँच","Electricity generation sources":"बिजली उत्पादन स्रोत","Nuclear energy":"परमाणु ऊर्जा","Internet users":"इंटरनेट उपयोगकर्ता","Telephones - mobile cellular":"मोबाइल फ़ोन","Broadband - fixed subscriptions":"ब्रॉडबैंड कनेक्शन","Broadcast media":"प्रसारण माध्यम","Airports":"हवाई अड्डे","Railways":"रेलवे","Ports":"बंदरगाह","Merchant marine":"व्यापारी बेड़ा","Space program overview":"अंतरिक्ष कार्यक्रम"},
+mr:{"Background":"पार्श्वभूमी","Country name":"देशाचे नाव","Capital":"राजधानी","Independence":"स्वातंत्र्य","National holiday":"राष्ट्रीय सुट्टी","National symbol(s)":"राष्ट्रीय प्रतीके","National color(s)":"राष्ट्रीय रंग","National anthem(s)":"राष्ट्रगीत","Flag":"ध्वज","National heritage":"राष्ट्रीय वारसा","Location":"स्थान","Area":"क्षेत्रफळ","Area - comparative":"तुलनात्मक क्षेत्रफळ","Land boundaries":"भू-सीमा","Coastline":"किनारपट्टी","Climate":"हवामान","Terrain":"भूप्रदेश","Elevation":"उंची","Natural resources":"नैसर्गिक संसाधने","Major rivers (by length in km)":"प्रमुख नद्या (लांबी किमी)","Major lakes (area sq km)":"प्रमुख तलाव (क्षेत्रफळ चौ. किमी)","Natural hazards":"नैसर्गिक आपत्ती","Environmental issues":"पर्यावरणीय समस्या","Geography - note":"भूगोल - टीप","Population":"लोकसंख्या","Population growth rate":"लोकसंख्या वाढीचा दर","Median age":"मध्यम वय","Age structure":"वयोरचना","Ethnic groups":"वांशिक गट","Languages":"भाषा","Religions":"धर्म","Urbanization":"नागरीकरण","Major urban areas - population":"प्रमुख शहरी क्षेत्रे - लोकसंख्या","Sex ratio":"लिंग गुणोत्तर","Literacy":"साक्षरता","Life expectancy at birth":"जन्मावेळचे आयुर्मान","Infant mortality rate":"अर्भक मृत्यू दर","Total fertility rate":"एकूण प्रजनन दर","Physician density":"डॉक्टर घनता","Hospital bed density":"रुग्णालय खाटा घनता","Health expenditure":"आरोग्य खर्च","Education expenditure":"शिक्षण खर्च","School life expectancy (primary to tertiary education)":"शालेय शिक्षणाचा अपेक्षित कालावधी","Government type":"शासन प्रकार","Executive branch":"कार्यकारी मंडळ","Legislative branch":"कायदेमंडळ","Legislative branch - lower chamber":"कायदेमंडळ - कनिष्ठ सभागृह","Legislative branch - upper chamber":"कायदेमंडळ - वरिष्ठ सभागृह","Judicial branch":"न्यायव्यवस्था","Political parties":"राजकीय पक्ष","Administrative divisions":"प्रशासकीय विभाग","Constitution":"संविधान","Legal system":"कायदा व्यवस्था","Suffrage":"मताधिकार","Economic overview":"आर्थिक आढावा","Real GDP (purchasing power parity)":"वास्तविक GDP (क्रयशक्ती समता)","Real GDP growth rate":"वास्तविक GDP वाढ दर","Real GDP per capita":"दरडोई वास्तविक GDP","GDP (official exchange rate)":"GDP (अधिकृत विनिमय दर)","Inflation rate (consumer prices)":"महागाई दर","GDP - composition, by sector of origin":"GDP - क्षेत्रनिहाय रचना","Industries":"उद्योग","Agricultural products":"कृषी उत्पादने","Unemployment rate":"बेरोजगारी दर","Gini Index coefficient - distribution of family income":"गिनी निर्देशांक","Exports":"निर्यात","Exports - partners":"निर्यात - भागीदार","Exports - commodities":"निर्यात - वस्तू","Imports":"आयात","Imports - partners":"आयात - भागीदार","Imports - commodities":"आयात - वस्तू","Public debt":"सार्वजनिक कर्ज","Remittances":"परदेशातून येणारा पैसा","Exchange rates":"विनिमय दर","International organization participation":"आंतरराष्ट्रीय संघटनांमधील सहभाग","Military and security forces":"लष्कर व सुरक्षा दले","Military expenditures":"लष्करी खर्च","Military and security service personnel strengths":"लष्करी मनुष्यबळ","Military equipment inventories and acquisitions":"लष्करी साधनसामग्री व खरेदी","Military deployments":"लष्करी तैनाती","Military - note":"लष्कर - टीप","Refugees and internally displaced persons":"निर्वासित व अंतर्गत विस्थापित","Terrorist group(s)":"दहशतवादी गट","Electricity access":"वीज उपलब्धता","Electricity generation sources":"वीजनिर्मितीचे स्रोत","Nuclear energy":"अणुऊर्जा","Internet users":"इंटरनेट वापरकर्ते","Telephones - mobile cellular":"मोबाइल फोन","Broadband - fixed subscriptions":"ब्रॉडबँड जोडण्या","Broadcast media":"प्रसारण माध्यमे","Airports":"विमानतळ","Railways":"रेल्वे","Ports":"बंदरे","Merchant marine":"व्यापारी नौदल","Space program overview":"अंतराळ कार्यक्रम"}
+};
+
+window.WV_REGION = {
+en:{Africa:"Africa",Americas:"Americas",Asia:"Asia",Europe:"Europe",Oceania:"Oceania",Antarctic:"Antarctic"},
+hi:{Africa:"अफ़्रीका",Americas:"अमेरिका महाद्वीप",Asia:"एशिया",Europe:"यूरोप",Oceania:"ओशिनिया",Antarctic:"अंटार्कटिक"},
+mr:{Africa:"आफ्रिका",Americas:"अमेरिका खंड",Asia:"आशिया",Europe:"युरोप",Oceania:"ओशियानिया",Antarctic:"अंटार्क्टिक"}
+};
+
+// Geopolitical terminology lexicon (EN → HI / MR)
+window.WV_LEX = [
+["Strategic Autonomy","सामरिक स्वायत्तता","सामरिक स्वायत्तता"],
+["Line of Actual Control (LAC)","वास्तविक नियंत्रण रेखा (LAC)","प्रत्यक्ष नियंत्रण रेषा (LAC)"],
+["Line of Control (LoC)","नियंत्रण रेखा (LoC)","नियंत्रण रेषा (LoC)"],
+["Freedom of Navigation","नौवहन की स्वतंत्रता","नौवहन स्वातंत्र्य"],
+["Global South","वैश्विक दक्षिण (ग्लोबल साउथ)","ग्लोबल साउथ"],
+["Neighbourhood First Policy","पड़ोसी प्रथम नीति","शेजारी प्रथम धोरण"],
+["Act East Policy","एक्ट ईस्ट नीति","ॲक्ट ईस्ट धोरण"],
+["Indian Ocean Region (IOR)","हिंद महासागर क्षेत्र","हिंद महासागर क्षेत्र"],
+["Exclusive Economic Zone (EEZ)","अनन्य आर्थिक क्षेत्र","अनन्य आर्थिक क्षेत्र"],
+["Comprehensive Strategic Partnership","व्यापक रणनीतिक साझेदारी","सर्वसमावेशक धोरणात्मक भागीदारी"],
+["Energy security","ऊर्जा सुरक्षा","ऊर्जा सुरक्षा"],
+["Supply-chain resilience","आपूर्ति श्रृंखला लचीलापन","पुरवठा साखळी लवचिकता"],
+["Maritime chokepoint","समुद्री चोकपॉइंट (संकरा जलमार्ग)","सागरी चोकपॉइंट (अरुंद जलमार्ग)"],
+["Indian diaspora","प्रवासी भारतीय","परदेशस्थ भारतीय"],
+["Multilateralism","बहुपक्षवाद","बहुपक्षीयता"]
+];
+</script>
+<script>// Groupings (membership as of mid-2026), chokepoints, corridors
+window.WV_GROUPS = {
+QUAD:{n:{en:"Quad",hi:"क्वाड",mr:"क्वाड"},f:"Quadrilateral Security Dialogue",m:["IND","USA","JPN","AUS"]},
+BRICS:{n:{en:"BRICS",hi:"ब्रिक्स",mr:"ब्रिक्स"},f:"BRICS (Saudi Arabia invited; participation unconfirmed)",m:["BRA","RUS","IND","CHN","ZAF","EGY","ETH","IRN","ARE","IDN"]},
+SCO:{n:{en:"SCO",hi:"SCO",mr:"SCO"},f:"Shanghai Cooperation Organisation",m:["CHN","IND","KAZ","KGZ","RUS","TJK","UZB","PAK","IRN","BLR"]},
+G20:{n:{en:"G20",hi:"G20",mr:"G20"},f:"Group of Twenty (plus the EU and African Union)",m:["ARG","AUS","BRA","CAN","CHN","FRA","DEU","IND","IDN","ITA","JPN","MEX","RUS","SAU","ZAF","KOR","TUR","GBR","USA"]},
+I2U2:{n:{en:"I2U2",hi:"I2U2",mr:"I2U2"},f:"India–Israel–UAE–USA",m:["IND","ISR","ARE","USA"]},
+IMEC:{n:{en:"IMEC",hi:"IMEC",mr:"IMEC"},f:"India–Middle East–Europe Economic Corridor MoU (2023, plus the EU)",m:["IND","USA","SAU","ARE","FRA","DEU","ITA"]},
+BIMSTEC:{n:{en:"BIMSTEC",hi:"बिम्सटेक",mr:"बिमस्टेक"},f:"Bay of Bengal Initiative for Multi-Sectoral Technical and Economic Cooperation",m:["BGD","BTN","IND","MMR","NPL","LKA","THA"]},
+SAARC:{n:{en:"SAARC",hi:"सार्क",mr:"सार्क"},f:"South Asian Association for Regional Cooperation",m:["AFG","BGD","BTN","IND","MDV","NPL","PAK","LKA"]},
+IORA:{n:{en:"IORA",hi:"IORA",mr:"IORA"},f:"Indian Ocean Rim Association",m:["AUS","BGD","COM","FRA","IND","IDN","IRN","KEN","MDG","MYS","MDV","MUS","MOZ","OMN","SYC","SGP","SOM","ZAF","LKA","TZA","THA","ARE","YEM"]},
+CSC:{n:{en:"Colombo Security Conclave",hi:"कोलंबो सुरक्षा सम्मेलन",mr:"कोलंबो सुरक्षा परिषद"},f:"Colombo Security Conclave",m:["IND","LKA","MDV","MUS","BGD"]},
+ASEAN:{n:{en:"ASEAN",hi:"आसियान",mr:"आसियान"},f:"Association of Southeast Asian Nations (India: Comprehensive Strategic Partner)",m:["BRN","KHM","IDN","LAO","MYS","MMR","PHL","SGP","THA","VNM","TLS"],x:true},
+G7:{n:{en:"G7",hi:"G7",mr:"G7"},f:"Group of Seven",m:["CAN","FRA","DEU","ITA","JPN","GBR","USA"],x:true},
+EU:{n:{en:"EU",hi:"यूरोपीय संघ",mr:"युरोपियन युनियन"},f:"European Union",m:["AUT","BEL","BGR","HRV","CYP","CZE","DNK","EST","FIN","FRA","DEU","GRC","HUN","IRL","ITA","LVA","LTU","LUX","MLT","NLD","POL","PRT","ROU","SVK","SVN","ESP","SWE"],x:true},
+NATO:{n:{en:"NATO",hi:"नाटो",mr:"नाटो"},f:"North Atlantic Treaty Organization",m:["ALB","BEL","BGR","CAN","HRV","CZE","DNK","EST","FIN","FRA","DEU","GRC","HUN","ISL","ITA","LVA","LTU","LUX","MNE","NLD","MKD","NOR","POL","PRT","ROU","SVK","SVN","ESP","SWE","TUR","GBR","USA"],x:true}
+};
+// x:true = India is not a member (shown for context only)
+
+window.WV_CHOKE = [
+{id:"hormuz",ll:[56.45,26.55],n:{en:"Strait of Hormuz",hi:"होर्मुज़ जलडमरूमध्य",mr:"होर्मुझ सामुद्रधुनी"},t:"Gateway for Gulf crude oil and LNG. A large share of India's energy imports passes through it."},
+{id:"bab",ll:[43.35,12.6],n:{en:"Bab el-Mandeb",hi:"बाब-अल-मंदेब",mr:"बाब-अल-मंदेब"},t:"Links the Red Sea to the Gulf of Aden. India–Europe trade via Suez depends on it; the Indian Navy has run anti-piracy patrols in the Gulf of Aden since 2008."},
+{id:"suez",ll:[32.35,30.45],n:{en:"Suez Canal",hi:"स्वेज़ नहर",mr:"सुएझ कालवा"},t:"Shortest sea route between India and Europe."},
+{id:"malacca",ll:[101.2,2.7],n:{en:"Strait of Malacca",hi:"मलक्का जलडमरूमध्य",mr:"मलाक्का सामुद्रधुनी"},t:"Main link between the Indian Ocean and the Pacific. India's Andaman and Nicobar Islands sit near its western approach."},
+{id:"six",ll:[94.0,6.3],n:{en:"Six Degree Channel",hi:"छह डिग्री चैनल",mr:"सहा अंश चॅनेल"},t:"Between Great Nicobar (India) and Sumatra; the western entry to Malacca."},
+{id:"ten",ll:[92.6,10.0],n:{en:"Ten Degree Channel",hi:"दस डिग्री चैनल",mr:"दहा अंश चॅनेल"},t:"Separates the Andaman Islands from the Nicobar Islands."},
+{id:"nine",ll:[73.3,9.0],n:{en:"Nine Degree Channel",hi:"नौ डिग्री चैनल",mr:"नऊ अंश चॅनेल"},t:"Separates Minicoy from the main Lakshadweep islands; carries heavy east–west shipping."},
+{id:"sunda",ll:[105.8,-5.95],n:{en:"Sunda Strait",hi:"सुंडा जलडमरूमध्य",mr:"सुंडा सामुद्रधुनी"},t:"Alternative to Malacca, between Sumatra and Java."},
+{id:"lombok",ll:[115.75,-8.55],n:{en:"Lombok Strait",hi:"लोम्बोक जलडमरूमध्य",mr:"लोम्बोक सामुद्रधुनी"},t:"Deep-water route used by very large tankers that cannot transit Malacca."},
+{id:"taiwan",ll:[119.6,24.3],n:{en:"Taiwan Strait",hi:"ताइवान जलडमरूमध्य",mr:"तैवान सामुद्रधुनी"},t:"Busy route for India's trade with Northeast Asia."},
+{id:"mozambique",ll:[41.0,-17.0],n:{en:"Mozambique Channel",hi:"मोज़ाम्बिक चैनल",mr:"मोझांबिक चॅनेल"},t:"East African route used when traffic diverts around the Cape."},
+{id:"cape",ll:[18.47,-34.36],n:{en:"Cape of Good Hope",hi:"केप ऑफ़ गुड होप",mr:"केप ऑफ गुड होप"},t:"Alternative to Suez; diversions surged during attacks on Red Sea shipping from late 2023."},
+{id:"gibraltar",ll:[-5.6,35.95],n:{en:"Strait of Gibraltar",hi:"जिब्राल्टर जलडमरूमध्य",mr:"जिब्राल्टरची सामुद्रधुनी"},t:"Atlantic–Mediterranean gateway."},
+{id:"bosporus",ll:[29.05,41.12],n:{en:"Bosporus",hi:"बोस्पोरस",mr:"बॉस्पोरस"},t:"Black Sea access; matters for grain, fertiliser and oil flows."},
+{id:"panama",ll:[-79.7,9.1],n:{en:"Panama Canal",hi:"पनामा नहर",mr:"पनामा कालवा"},t:"Atlantic–Pacific link for trade with the Americas."}
+];
+
+window.WV_CORR = {
+imec:{n:{en:"IMEC — India–Middle East–Europe Economic Corridor",hi:"IMEC — भारत–मध्य पूर्व–यूरोप आर्थिक गलियारा",mr:"IMEC — भारत–मध्यपूर्व–युरोप आर्थिक कॉरिडॉर"},t:"Announced at the G20 New Delhi summit (September 2023): sea link from western India to the UAE, rail across Saudi Arabia and Jordan to Haifa, then sea to Europe. Route shown is indicative.",
+ legs:[{k:"sea",c:[[69.7,22.74],[56.36,25.12]]},{k:"rail",c:[[56.36,25.12],[51.6,24.1],[46.7,24.7],[37.15,31.45],[34.99,32.82]]},{k:"sea",c:[[34.99,32.82],[23.6,37.94]]},{k:"sea",c:[[23.6,37.94],[15.6,38.2],[5.37,43.3]]}]},
+instc:{n:{en:"INSTC — International North–South Transport Corridor",hi:"INSTC — अंतरराष्ट्रीय उत्तर–दक्षिण परिवहन गलियारा",mr:"INSTC — आंतरराष्ट्रीय उत्तर–दक्षिण वाहतूक कॉरिडॉर"},t:"Multimodal route linking Mumbai to Russia via Iran and the Caspian region (agreement 2000). India also operates a terminal at Chabahar port under a 10-year agreement signed in 2024. Route shown is indicative.",
+ legs:[{k:"sea",c:[[72.88,18.95],[56.27,27.18]]},{k:"rail",c:[[56.27,27.18],[51.39,35.69],[49.58,37.28],[49.87,40.41],[48.03,46.35],[37.62,55.75]]}],
+ pts:[{n:"Chabahar",ll:[60.62,25.29]}]},
+lanes:{n:{en:"Indian Ocean sea lanes",hi:"हिंद महासागर समुद्री मार्ग",mr:"हिंद महासागरातील सागरी मार्ग"},t:"Principal east–west shipping lanes across the Indian Ocean, the Gulf energy route, and the Cape alternative. Indicative.",
+ legs:[{k:"lane",c:[[32.55,29.9],[38,20],[43.4,12.6],[50,12.5],[60,13],[73,9],[80.5,5.6],[90,6],[94.5,6.2],[98,5.5],[101.3,2.6],[104,1.3],[110,8],[114,16],[119.5,24],[123,31]]},{k:"lane",c:[[56.3,26.5],[59,23.5],[66,20],[72.8,18.9]]},{k:"lane",c:[[18.47,-34.6],[32,-30],[41.5,-17],[50,-5],[62,5],[73,9]]}]}
+};
+</script>
+<script>(function(){
+"use strict";
+const I=window.WV_I18N, FL=window.WV_FL, RG=window.WV_REGION, LEX=window.WV_LEX, GROUPS=window.WV_GROUPS, CHOKE=window.WV_CHOKE, CORR=window.WV_CORR;
+const BASE=window.WV_BASE||"";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const store={get(k,d){try{const v=localStorage.getItem("wv:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("wv:"+k,JSON.stringify(v))}catch(e){}}};
+const RM=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const S={lang:store.get("lang","en"),edition:store.get("edition","india"),proj:"flat",color:store.get("color","region"),group:null,
+  layers:store.get("layers",{choke:true,imec:false,instc:false,lanes:false}),ptab:"explore",sel:null,tab:"overview",
+  fav:store.get("fav",[]),recent:store.get("recent",[]),cmp:[],mxSort:["g",-1]};
+let C={},CUR={},GEO={},feats=[],byId={},shards={};
+const t=k=>{const v=I[S.lang][k];return v==null?I.en[k]:v};
+const tt=k=>(I[S.lang].tabs[k]||I.en.tabs[k]);
+const loc=()=>({en:"en-IN",hi:"hi-IN",mr:"mr-IN"}[S.lang]);
+
+/* ---------- names ---------- */
+const DN={};
+function dn(lang){if(!(lang in DN)){try{DN[lang]=new Intl.DisplayNames([lang],{type:"region"})}catch(e){DN[lang]=null}}return DN[lang]}
+function nameOf(k,lang){lang=lang||S.lang;const c=C[k];if(!c){const f=byId[k];return f?f.properties.n:k}
+  if(lang!=="en"){const d=dn(lang);try{const n=d&&c.a2&&d.of(c.a2);if(n&&n!==c.a2)return n}catch(e){}}
+  return c.n}
+function flagEmoji(k){const c=C[k];return c&&c.fl?c.fl:"🏳️"}
+
+/* ---------- formatting ---------- */
+const nf=(n,d=0)=>Number(n).toLocaleString("en-IN",{maximumFractionDigits:d,minimumFractionDigits:d});
+const W={en:{tr:"trillion",bn:"billion",mn:"million",cr:"crore",lk:"lakh"},hi:{tr:"ट्रिलियन",bn:"बिलियन",mn:"मिलियन",cr:"करोड़",lk:"लाख",arab:"अरब"},mr:{tr:"ट्रिलियन",bn:"बिलियन",mn:"मिलियन",cr:"कोटी",lk:"लाख"}};
+function fPop(n){if(n==null)return t("notAvail");const w=W[S.lang];
+  if(S.lang==="en"){if(n>=1e9)return (n/1e9).toFixed(2)+" "+w.bn;if(n>=1e6)return (n/1e6).toFixed(1)+" "+w.mn;return nf(n)}
+  if(n>=1e7)return nf(n/1e7,1)+" "+w.cr;if(n>=1e5)return nf(n/1e5,1)+" "+w.lk;return nf(n)}
+function fPopAlt(n){if(n==null||S.lang!=="en")return "";if(n>=1e7)return nf(n/1e7,1)+" crore";if(n>=1e5)return nf(n/1e5,1)+" lakh";return ""}
+function fUsd(bn){if(bn==null)return t("notAvail");const w=W[S.lang];if(bn>=1000)return "$"+(bn/1000).toFixed(2)+" "+w.tr;if(bn>=1)return "$"+bn.toFixed(1)+" "+w.bn;return "$"+Math.round(bn*1000)+" "+w.mn}
+function fArea(a){if(!a)return t("notAvail");return nf(a)+" km²"}
+function fCompact(v,mode){if(v==null)return "—";if(mode==="population")return fPop(v);if(mode==="gdp")return fUsd(v);if(mode==="gdppc")return "$"+nf(v);if(mode==="area")return nf(v)+" km²";if(mode==="density")return nf(v,v<10?1:0)+" /km²";return String(v)}
+
+/* ---------- metrics ---------- */
+const RANKSET=k=>{const c=C[k];return c&&(c.un||["PSE","VAT"].includes(k))};
+function metric(k,mode){const c=C[k];if(!c)return null;
+  switch(mode){case"population":return c.pop?c.pop[0]:null;case"gdp":return c.gdp?c.gdp[0]:null;case"gdppc":return c.pc?c.pc[0]:null;
+  case"area":return c.ar||null;case"density":return c.pop&&c.ar>0?c.pop[0]/c.ar:null;case"shared":return sharedGroups(k).length;default:return null}}
+const RANK={};
+function rankOf(k,mode){if(!RANK[mode]){const arr=Object.keys(C).filter(RANKSET).map(x=>[x,metric(x,mode)]).filter(x=>x[1]!=null).sort((a,b)=>b[1]-a[1]);RANK[mode]={n:arr.length,r:Object.fromEntries(arr.map((x,i)=>[x[0],i+1]))}}
+  const R=RANK[mode];return R.r[k]?[R.r[k],R.n]:null}
+function sharedGroups(k){if(k==="IND")return Object.keys(GROUPS).filter(g=>!GROUPS[g].x);return Object.keys(GROUPS).filter(g=>!GROUPS[g].x&&GROUPS[g].m.includes(k)&&GROUPS[g].m.includes("IND"))}
+function memberOf(k){return Object.keys(GROUPS).filter(g=>GROUPS[g].m.includes(k))}
+function bordersOf(k){const b=(C[k]&&C[k].b||[]).slice();if(S.edition==="india"){if(k==="IND"&&!b.includes("AFG"))b.push("AFG");if(k==="AFG"&&!b.includes("IND"))b.push("IND")}return b}
+function distKm(a,b){return Math.round(d3.geoDistance(a,b)*6371)}
+const DELHI=[77.21,28.61];
+
+/* ---------- colours ---------- */
+let TOK={};
+function readTokens(){const cs=getComputedStyle(document.documentElement);["--land","--seq0","--seq1","--accent","--r-af","--r-am","--r-as","--r-eu","--r-oc","--r-an","--chip","--sea"].forEach(v=>TOK[v]=cs.getPropertyValue(v).trim())}
+const REGC={Africa:"--r-af",Americas:"--r-am",Asia:"--r-as",Europe:"--r-eu",Oceania:"--r-oc",Antarctic:"--r-an"};
+let colorFn=()=>TOK["--land"];
+function buildColor(){readTokens();const m=S.color;
+  if(m==="region"){colorFn=k=>{const c=C[k];return c&&REGC[c.r]?TOK[REGC[c.r]]:TOK["--land"]};return}
+  if(m==="shared"){const sc=d3.scaleLinear().domain([0,6]).range([TOK["--seq0"],TOK["--seq1"]]).interpolate(d3.interpolateLab).clamp(true);
+    colorFn=k=>k==="IND"?TOK["--accent"]:(C[k]?sc(metric(k,"shared")):TOK["--land"]);return}
+  const vals=Object.keys(C).map(k=>metric(k,m)).filter(v=>v!=null&&v>0);
+  const ext=[d3.quantile(vals.slice().sort(d3.ascending),.02)||d3.min(vals),d3.max(vals)];
+  const sc=d3.scaleLog().domain(ext).range([TOK["--seq0"],TOK["--seq1"]]).interpolate(d3.interpolateLab).clamp(true);
+  colorFn=k=>{const v=metric(k,m);return v!=null&&v>0?sc(v):TOK["--chip"]};colorFn.ext=ext}
+
+/* ---------- map ---------- */
+const svg=d3.select("#map");let W_,H_;
+const gRoot=svg.append("g"),gSea=gRoot.append("path").attr("class","sea"),gGrat=gRoot.append("path").attr("class","grat"),gLand=gRoot.append("g"),gOver=gRoot.append("g"),gPts=gRoot.append("g");
+let proj,path,zoom,curK=1;
+const grat=d3.geoGraticule10();
+function setupProjection(){W_=innerWidth;H_=innerHeight;svg.attr("viewBox",[0,0,W_,H_]);
+  if(S.proj==="flat"){proj=d3.geoEqualEarth().fitExtent([[12,Math.min(110,H_*.12)],[W_-12,H_-12]],{type:"Sphere"})}
+  else{const r=Math.min(W_,H_-80)/2.25;proj=d3.geoOrthographic().scale(r).translate([W_/2,H_/2+30]).clipAngle(90).rotate(proj&&proj.rotate&&S._rot?S._rot:[-78,-18,0])}
+  path=d3.geoPath(proj)}
+function drawAll(){gSea.attr("d",path({type:"Sphere"}));gGrat.attr("d",path(grat));
+  gLand.selectAll("path.ctry").attr("d",path);drawOverlays()}
+function render(){
+  const sel=gLand.selectAll("path.ctry").data(feats,d=>d.id);
+  sel.exit().remove();
+  sel.enter().append("path").attr("class",d=>"ctry"+(C[d.id]?"":" special")).attr("tabindex",-1)
+    .on("mousemove",onHover).on("mouseleave",()=>{$("#tip").hidden=true})
+    .on("click",(e,d)=>{e.stopPropagation();openCountry(d.id)})
+    .merge(sel).attr("d",path);
+  paint();drawOverlays()}
+function paint(){gLand.selectAll("path.ctry").attr("fill",d=>colorFn(d.id))
+  .classed("sel",d=>d.id===S.sel).classed("dim",d=>S.group?!GROUPS[S.group].m.includes(d.id):false);
+  if(S.group){gLand.selectAll("path.ctry").filter(d=>GROUPS[S.group].m.includes(d.id)).attr("fill",d=>d.id==="IND"?TOK["--accent"]:d3.interpolateLab(TOK["--accent"],colorFn(d.id))(.35))}
+  gLand.selectAll("path.ctry.sel").raise();legend()}
+function visible(ll){if(S.proj==="flat")return true;const r=proj.rotate();return d3.geoDistance(ll,[-r[0],-r[1]])<Math.PI/2-.02}
+function drawOverlays(){gOver.selectAll("*").remove();gPts.selectAll("*").remove();
+  const addLegs=(key,cls)=>{const g=gOver.append("g").attr("class",cls);CORR[key].legs.forEach(l=>{g.append("path").attr("class",l.k==="lane"?"lane":l.k==="rail"?"leg-rail":"leg-sea").attr("d",path({type:"LineString",coordinates:l.c}))});
+    (CORR[key].pts||[]).forEach(p=>{if(!visible(p.ll))return;const xy=proj(p.ll);gPts.append("g").attr("class","port").attr("transform",`translate(${xy})`).append("circle").attr("r",4/curK).append("title").text(p.n)})};
+  if(S.layers.lanes)addLegs("lanes","lanes");
+  if(S.layers.imec)addLegs("imec","imec");
+  if(S.layers.instc)addLegs("instc","instc");
+  if(S.layers.choke){CHOKE.forEach(c=>{if(!visible(c.ll))return;const xy=proj(c.ll);const g=gPts.append("g").attr("class","choke").attr("transform",`translate(${xy})`)
+      .on("mousemove",e=>tip(e,`<b>${esc(c.n[S.lang])}</b><span>${esc(c.t)}</span>`)).on("mouseleave",()=>{$("#tip").hidden=true});
+    g.append("circle").attr("class","ring").attr("r",7/curK);g.append("circle").attr("class","core").attr("r",4/curK)})}}
+function onHover(e,d){const k=d.id,c=C[k];let line="";
+  if(!c)line=t("special");else if(["region"].includes(S.color))line=(RG[S.lang][c.r]||c.r)+(c.sr?" · "+c.sr:"");
+  else if(S.color==="shared"){const g=sharedGroups(k);line=k==="IND"?t("india"):(g.length?g.map(x=>GROUPS[x].n[S.lang]).join(" · "):"0")}
+  else line=fCompact(metric(k,S.color),S.color);
+  tip(e,`<b>${esc(flagEmoji(k))} ${esc(nameOf(k))}</b><span>${esc(line)}</span>`)}
+function tip(e,html){const el=$("#tip");el.innerHTML=html;el.hidden=false;const x=Math.min(e.clientX+14,innerWidth-el.offsetWidth-8),y=Math.min(e.clientY+14,innerHeight-el.offsetHeight-8);el.style.left=x+"px";el.style.top=y+"px"}
+
+function attachInteraction(){svg.on(".zoom",null).on(".drag",null);
+  if(S.proj==="flat"){zoom=d3.zoom().scaleExtent([1,16]).clickDistance(4).translateExtent([[-W_,-H_],[W_*2,H_*2]])
+      .on("zoom",e=>{gRoot.attr("transform",e.transform);if(Math.abs(e.transform.k-curK)>.01){curK=e.transform.k;gPts.selectAll("circle.core,.port circle").attr("r",4/curK);gPts.selectAll("circle.ring").attr("r",7/curK)}});
+    svg.call(zoom).on("dblclick.zoom",null);svg.call(zoom.transform,d3.zoomIdentity)}
+  else{gRoot.attr("transform",null);curK=1;
+    let raf=0;const redraw=()=>{raf=0;drawAll()};
+    svg.call(d3.drag().clickDistance(4).on("drag",e=>{const r=proj.rotate(),k=75/proj.scale();proj.rotate([r[0]+e.dx*k,Math.max(-80,Math.min(80,r[1]-e.dy*k)),0]);S._rot=proj.rotate();if(!raf)raf=requestAnimationFrame(redraw)}));
+    svg.on("wheel.globe",e=>{e.preventDefault();const s=Math.max(150,Math.min(3000,proj.scale()*(e.deltaY<0?1.08:.93)));proj.scale(s);if(!raf)raf=requestAnimationFrame(redraw)},{passive:false})}}
+function zoomBy(f){if(S.proj==="flat")svg.transition().duration(RM?0:300).call(zoom.scaleBy,f);else{proj.scale(Math.max(150,Math.min(3000,proj.scale()*f)));drawAll()}}
+function resetView(){if(S.proj==="flat")svg.transition().duration(RM?0:600).call(zoom.transform,d3.zoomIdentity);else{proj.rotate([-78,-18,0]);S._rot=null;setupGlobeScale();drawAll()}}
+function setupGlobeScale(){proj.scale(Math.min(W_,H_-80)/2.25)}
+function viewCentre(){const desk=innerWidth>820;const L=desk?360:0,Rr=desk&&S.sel?Math.min(560,innerWidth-32)+24:0;
+  return {ox:L+(W_-L-Rr)/2,oy:desk?H_/2+30:(S.sel?Math.max(130,H_*.16)/1+0:H_/2),aw:W_-L-Rr,ah:desk?H_-140:(S.sel?H_*.16:H_-160),desk}}
+function flyTo(k){const f=byId[k];if(!f)return;const c=C[k];
+  const centre=c&&c.ll?[c.ll[1],c.ll[0]]:d3.geoCentroid(f);const v=viewCentre();
+  if(S.proj==="flat"){let [[x0,y0],[x1,y1]]=path.bounds(f);const wide=(x1-x0)>W_*.5;
+    let cx,cy,s;if(wide||!isFinite(x0)){[cx,cy]=proj(centre);s=2}else{cx=(x0+x1)/2;cy=(y0+y1)/2;s=.8/Math.max((x1-x0)/v.aw,(y1-y0)/Math.max(v.ah,120))}
+    s=Math.max(1,Math.min(v.desk?8:4,s));
+    svg.transition().duration(RM?0:900).call(zoom.transform,d3.zoomIdentity.translate(v.ox,v.oy).scale(s).translate(-cx,-cy))}
+  else{const r0=proj.rotate(),r1=[-centre[0],-centre[1],0];const ip=d3.interpolate(r0,r1);
+    d3.transition().duration(RM?0:900).tween("rot",()=>x=>{proj.rotate(ip(x));S._rot=proj.rotate();drawAll()})}}
+
+/* ---------- legend ---------- */
+function legend(){const el=$("#legend");const m=S.color;let h=`<h4>${esc(t(m==="shared"?"shared":m))}</h4>`;
+  if(m==="region"){h+=`<div class="cats">`+Object.keys(REGC).filter(r=>r!=="Antarctic").map(r=>`<span><i style="background:${TOK[REGC[r]]}"></i>${esc(RG[S.lang][r])}</span>`).join("")+`</div><div class="src">${esc(t("legendSrc"))}: UN M49 (world-countries)</div>`}
+  else if(m==="shared"){h+=`<div class="ramp" style="background:linear-gradient(90deg,${TOK["--seq0"]},${TOK["--seq1"]})"></div><div class="ends"><span>0</span><span>6+</span></div><div class="src">Quad, BRICS, SCO, G20, I2U2, IMEC, BIMSTEC, SAARC, IORA, CSC · mid-2026</div>`}
+  else{const e=colorFn.ext||[0,1];const yrs=Object.values(C).map(c=>m==="population"||m==="density"?c.pop&&c.pop[1]:m==="area"?null:c.gdp&&c.gdp[1]).filter(Boolean);
+    const yr=yrs.length?(d3.min(yrs)===d3.max(yrs)?d3.max(yrs):`${d3.quantile(yrs.sort(),.1)}–${d3.max(yrs)}`):"";
+    h+=`<div class="ramp" style="background:linear-gradient(90deg,${TOK["--seq0"]},${TOK["--seq1"]})"></div><div class="ends"><span>${esc(fCompact(e[0],m))}</span><span>${esc(fCompact(e[1],m))}</span></div><div class="src">${m==="area"?"world-countries (area incl. inland water)":esc(t("wb"))+(yr?" · "+yr:"")} · log scale</div>`}
+  h+=`<div class="src">${esc(S.edition==="india"?t("mapEd"):t("mapEdG"))}</div>`;el.innerHTML=h}
+
+/* ---------- data loading ---------- */
+async function getJSON(u){const r=await fetch(u);if(!r.ok)throw new Error(u+" "+r.status);return r.json()}
+async function loadGeo(ed){if(GEO[ed])return GEO[ed];const topo=await getJSON(BASE+(ed==="india"?"geo-india.json":"geo-global.json"));
+  const fc=topojson.feature(topo,topo.objects.c);GEO[ed]=fc.features;return GEO[ed]}
+async function setEdition(ed){S.edition=ed;store.set("edition",ed);feats=await loadGeo(ed);byId=Object.fromEntries(feats.map(f=>[f.id,f]));gLand.selectAll("path.ctry").remove();render();renderPanel()}
+async function shard(k){const L=k[0];if(shards[L])return shards[L];shards[L]=getJSON(BASE+"shard/"+L+".json").catch(e=>{delete shards[L];throw e});return shards[L]}
+
+/* ---------- search ---------- */
+let IDX=[];
+const norm=s=>String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+function buildIndex(){IDX=Object.keys(C).map(k=>{const c=C[k];const terms=[c.n,c.o,c.nv,k,c.a2,nameOf(k,"hi"),nameOf(k,"mr")];if(k==="IND")terms.push("bharat","bhārat","भारत");return {k,terms:terms.filter(Boolean).map(norm)}})}
+let qSel=-1,qItems=[];
+function doSearch(){const q=norm($("#q").value.trim());const ul=$("#qres");if(!q){ul.hidden=true;return}
+  const sc=[];IDX.forEach(r=>{let best=0;r.terms.forEach(tm=>{if(tm===q)best=Math.max(best,100);else if(tm.startsWith(q))best=Math.max(best,60);else if(tm.includes(q))best=Math.max(best,25)});if(best)sc.push([r.k,best+(C[r.k].pop?Math.log10(C[r.k].pop[0])/10:0)])});
+  sc.sort((a,b)=>b[1]-a[1]);qItems=sc.slice(0,8).map(x=>x[0]);qSel=qItems.length?0:-1;
+  ul.innerHTML=qItems.length?qItems.map((k,i)=>`<li role="option" data-k="${k}" aria-selected="${i===qSel}"><span>${esc(flagEmoji(k))}</span><span>${esc(nameOf(k))}${S.lang!=="en"?` <span class="note">· ${esc(C[k].n)}</span>`:""}</span><small>${k}</small></li>`).join(""):`<li>${esc(t("noResults"))}</li>`;ul.hidden=false}
+function pickSearch(k){$("#qres").hidden=true;$("#q").value="";$("#q").blur();openCountry(k)}
+
+/* ---------- panel ---------- */
+const COLOR_MODES=["region","population","density","area","gdp","gdppc","shared"];
+function renderPanel(){["explore","lens","library"].forEach(p=>{const b=$("#pt-"+p);b.textContent=t(p==="lens"?"lens":p);b.setAttribute("aria-selected",S.ptab===p)});
+  const pb=$("#pbody");let h="";
+  if(S.ptab==="explore"){
+    h+=`<div class="grp"><div class="lbl">${esc(t("colorBy"))}</div><div class="chips">${COLOR_MODES.map(m=>`<button class="chip${m==="shared"?" lensc":""}" data-color="${m}" aria-pressed="${S.color===m}">${esc(t(m))}</button>`).join("")}</div></div>`;
+    h+=`<div class="grp"><div class="lbl">${esc(t("view"))}</div><div class="chips"><button class="chip" data-proj="flat" aria-pressed="${S.proj==="flat"}">${esc(t("map"))}</button><button class="chip" data-proj="globe" aria-pressed="${S.proj==="globe"}">${esc(t("globe"))}</button></div></div>`;
+    h+=`<div class="grp"><div class="lbl">${esc(t("bounds"))}</div><div class="chips"><button class="chip" data-ed="india" aria-pressed="${S.edition==="india"}">${esc(t("bInd"))}</button><button class="chip" data-ed="global" aria-pressed="${S.edition==="global"}">${esc(t("bGlob"))}</button></div><div class="note">${esc(S.edition==="india"?t("mapEd"):t("mapEdG"))}</div></div>`;
+    h+=layerToggles();
+    h+=`<div class="note">${esc(t("dataNote"))}</div>`}
+  else if(S.ptab==="lens"){
+    h+=`<div class="lensbox">${esc(t("analytical"))}: ${esc(t("matrixNote"))}</div>`;
+    h+=`<div class="grp"><div class="lbl">${esc(t("highlight"))}</div><div class="chips"><button class="chip lensc" data-group="" aria-pressed="${!S.group}">${esc(t("none"))}</button>${Object.keys(GROUPS).map(g=>`<button class="chip lensc" data-group="${g}" aria-pressed="${S.group===g}" title="${esc(GROUPS[g].f)}">${esc(GROUPS[g].n[S.lang])}</button>`).join("")}</div>${S.group?`<div class="note">${esc(GROUPS[S.group].f)} · ${GROUPS[S.group].m.length} ${esc(t("members"))}</div>`:""}</div>`;
+    h+=layerToggles();
+    h+=`<div class="grp"><div class="lbl">${esc(t("chokes"))}</div><div class="list">${CHOKE.map(c=>`<button data-choke="${c.id}"><i class="dot"></i><span>${esc(c.n[S.lang])}<small>${esc(c.t)}</small></span></button>`).join("")}</div></div>`;
+    h+=`<div class="grp"><div class="lbl">${esc(t("corridors"))}</div>${["imec","instc"].map(k=>`<div><b style="font-weight:600;font-size:14px">${esc(CORR[k].n[S.lang])}</b><div class="note">${esc(CORR[k].t)}</div></div>`).join("")}</div>`;
+    h+=matrixHTML();
+    h+=`<div class="grp"><div class="lbl">${esc(t("lexicon"))}</div><div class="lex">${LEX.map(r=>`<div><b>${esc(r[0])}</b><span lang="hi">हिं: ${esc(r[1])}</span><br><span lang="mr">मरा: ${esc(r[2])}</span></div>`).join("")}</div></div>`}
+  else{
+    const chipList=(arr,empty)=>arr.length?`<div class="chips">${arr.map(k=>`<button class="chip" data-open="${k}">${esc(flagEmoji(k))} ${esc(nameOf(k))}</button>`).join("")}</div>`:`<div class="note">${esc(t(empty))}</div>`;
+    h+=`<div class="grp"><div class="lbl">${esc(t("fav"))}</div>${chipList(S.fav,"emptyFav")}</div>`;
+    h+=`<div class="grp"><div class="lbl">${esc(t("recent"))}</div>${chipList(S.recent,"emptyRecent")}</div>`;
+    h+=`<div class="grp"><div class="lbl">${esc(t("compare"))}</div>${S.cmp.length?chipList(S.cmp,""):`<div class="note">${esc(t("addCompare"))} →</div>`}</div>`}
+  pb.innerHTML=h}
+function layerToggles(){const L=[["choke","lChoke","var(--accent)"],["imec","lImec","var(--corr)"],["instc","lInstc","var(--corr2)"],["lanes","lLanes","var(--lane)"]];
+  return `<div class="grp"><div class="lbl">${esc(t("layers"))}</div>${L.map(([k,l,c])=>`<label class="toggle"><input type="checkbox" id="ly-${k}" data-layer="${k}" ${S.layers[k]?"checked":""}><span>${esc(t(l))}</span><i class="swatch" style="background:${c}"></i></label>`).join("")}</div>`}
+function matrixHTML(){const rows=Object.keys(C).filter(k=>RANKSET(k)&&k!=="IND"&&C[k].ll).map(k=>{const c=C[k];return {k,g:sharedGroups(k).length,b:bordersOf(k).includes("IND")?1:0,d:distKm(DELHI,[c.ll[1],c.ll[0]])}});
+  const [f,dir]=S.mxSort;rows.sort((a,b)=>f==="n"?dir*nameOf(a.k).localeCompare(nameOf(b.k)):(dir*(a[f]-b[f])||a.d-b.d));
+  const arrow=x=>S.mxSort[0]===x?(S.mxSort[1]<0?" ↓":" ↑"):"";
+  return `<div class="grp"><div class="lbl">${esc(t("matrix"))}</div><div class="mxwrap"><table class="mx"><thead><tr><th data-sort="n">${esc(t("country"))}${arrow("n")}</th><th data-sort="g">${esc(t("groups"))}${arrow("g")}</th><th data-sort="b">${esc(t("border"))}${arrow("b")}</th><th data-sort="d">${esc(t("km"))}${arrow("d")}</th></tr></thead><tbody>${rows.map(r=>`<tr data-open="${r.k}"><td>${esc(flagEmoji(r.k))} ${esc(nameOf(r.k))}</td><td class="mono">${r.g}</td><td>${r.b?"●":""}</td><td class="mono">${nf(r.d)}</td></tr>`).join("")}</tbody></table></div><div class="note">${esc(t("matrixNote"))}</div></div>`}
+
+/* ---------- drawer ---------- */
+const TABS=["overview","geography","people","government","economy","foreign","culture","history","infra","india","facts"];
+let CUR_REC=null;
+async function openCountry(k,tab){if(!byId[k]&&!C[k])return;S.sel=k;S.tab=tab&&TABS.includes(tab)?tab:(S.tab||"overview");
+  if(C[k]){S.recent=[k,...S.recent.filter(x=>x!==k)].slice(0,10);store.set("recent",S.recent)}
+  try{history.replaceState(null,"","#"+k+(S.tab!=="overview"?"."+S.tab:""))}catch(e){}
+  paint();flyTo(k);$("#hint").hidden=true;
+  const dr=$("#drawer");dr.hidden=false;dr.classList.remove("closing");
+  if(!C[k]){dr.innerHTML=heroHTML(k,null)+`<div class="dbody"><div class="empty"><b>${esc(t("special"))}</b>${esc(specialNote(k))}</div></div>`;wireDrawer(k);return}
+  dr.innerHTML=heroHTML(k,null)+tabsHTML()+`<div class="dbody" id="dbody"><div class="skel" style="width:60%"></div><div class="skel"></div><div class="skel" style="width:80%"></div><div class="note">${esc(t("loading"))}</div></div>`;wireDrawer(k);
+  try{const sh=await shard(k);if(S.sel!==k)return;CUR_REC={k,base:C[k],fb:(sh[k]||{}).fb||{},flag:(sh[k]||{}).flag,cur:CUR[k]};
+    const cache=store.get("cache",{});cache[k]=Date.now();store.set("cache",cache);
+    dr.innerHTML=heroHTML(k,CUR_REC)+tabsHTML()+`<div class="dbody" id="dbody"></div>`;wireDrawer(k);renderTab()}
+  catch(e){const b=$("#dbody");if(b)b.innerHTML=`<div class="err">${esc(t("loadErr"))} <button class="morebtn" id="retry">${esc(t("retry"))}</button></div>`;const r=$("#retry");if(r)r.onclick=()=>openCountry(k)}}
+const SPECIAL={SOL:"Somaliland: self-declared state; internationally recognised as part of Somalia.",CYN:"Northern Cyprus: recognised only by Türkiye; internationally recognised as part of Cyprus.",KAS:"Siachen Glacier: under Indian control since 1984; claimed by Pakistan. Shown as part of India in the India edition.",CNM:"UN buffer zone in Cyprus.",KAB:"Baikonur: Kazakh territory leased to Russia for its cosmodrome.",SPI:"Southern Patagonian Ice Field: boundary partly undemarcated between Argentina and Chile.",BRT:"Bir Tawil: unclaimed land between Egypt and Sudan.",PGA:"Spratly Islands: claimed in whole or part by China, Taiwan, Vietnam, the Philippines, Malaysia and Brunei.",SCR:"Scarborough Reef: disputed between China, Taiwan and the Philippines.",IOA:"Australian Indian Ocean territories (Christmas Island, Cocos Islands).",ESB:"Dhekelia: UK Sovereign Base Area on Cyprus.",WSB:"Akrotiri: UK Sovereign Base Area on Cyprus.",USG:"US naval base at Guantánamo Bay, Cuba."};
+const specialNote=k=>SPECIAL[k]||"A territory without a full country profile in this edition.";
+function heroHTML(k,R){const c=C[k];const fav=S.fav.includes(k),inC=S.cmp.includes(k);
+  const flag=R&&R.flag?`<img alt="" src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(R.flag)}">`:"";
+  const nm=nameOf(k);const sub=c?[S.lang!=="en"?c.n:null,c.o!==c.n?c.o:null].filter(Boolean).join(" · "):"";
+  const stats=c?[[t("capital"),(c.cap||[]).join(", ")||"—",""],[t("population"),fPop(c.pop&&c.pop[0]),c.pop?t("wb")+" "+c.pop[1]:""],[t("gdp"),fUsd(c.gdp&&c.gdp[0]),c.gdp?t("wb")+" "+c.gdp[1]:""],[t("area"),c.ar?nf(c.ar)+" km²":"—",""]]:[];
+  const wikiLang=S.lang==="en"?"en":S.lang;const wikiT=S.lang==="en"?(c?c.n:nm):nm;
+  return `<div class="hero">${flag?`<div class="bgflag" aria-hidden="true">${flag}</div>`:""}
+  <button class="icon-btn closeX" id="dClose" aria-label="${esc(t("close"))}"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <div class="row"><div class="flagbox${flag?" wave":""}" aria-hidden="true">${flag||esc(c?flagEmoji(k):"")}</div><div style="min-width:0;padding-right:40px"><h2>${esc(nm)}</h2><div class="sub">${esc(sub)}</div></div></div>
+  ${c?`<div class="acts">
+    <button class="act" id="aFav" aria-pressed="${fav}"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>${esc(t("fav"))}</button>
+    <button class="act" id="aCmp" aria-pressed="${inC}"><svg viewBox="0 0 24 24"><path d="M8 3v18M16 3v18M3 8h5M16 16h5"/></svg>${esc(inC?t("inCompare"):t("addCompare"))}</button>
+    <button class="act" id="aCopy"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg><span>${esc(t("copy"))}</span></button>
+    ${"speechSynthesis" in window?`<button class="act" id="aRead"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/></svg><span>${esc(t("read"))}</span></button>`:""}
+    <a class="act" href="https://${wikiLang}.wikipedia.org/wiki/${encodeURIComponent(wikiT.replace(/ /g,"_"))}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>${esc(t("wiki"))}</a>
+  </div><div class="stats">${stats.map(s=>`<div class="stat"><div class="k">${esc(s[0])}</div><div class="v">${esc(s[1])}</div>${s[2]?`<div class="y">${esc(s[2])}</div>`:""}</div>`).join("")}</div>`:""}</div>`}
+function tabsHTML(){return `<div class="dtabs" role="tablist">${TABS.map(x=>`<button role="tab" data-tab="${x}" class="${x==="india"?"lensTab":""}" aria-selected="${S.tab===x}">${esc(tt(x))}</button>`).join("")}</div>`}
+function wireDrawer(k){const q=s=>document.querySelector("#drawer "+s);
+  q("#dClose").onclick=closeDrawer;
+  const f=q("#aFav");if(f)f.onclick=()=>{S.fav=S.fav.includes(k)?S.fav.filter(x=>x!==k):[k,...S.fav];store.set("fav",S.fav);f.setAttribute("aria-pressed",S.fav.includes(k));if(S.ptab==="library")renderPanel()};
+  const cm=q("#aCmp");if(cm)cm.onclick=()=>{toggleCmp(k);cm.setAttribute("aria-pressed",S.cmp.includes(k));cm.lastChild.textContent=S.cmp.includes(k)?t("inCompare"):t("addCompare")};
+  const cp=q("#aCopy");if(cp)cp.onclick=()=>{const txt=summaryText(k);const done=ok=>{cp.querySelector("span").textContent=ok?t("copied"):t("copyFail");setTimeout(()=>{if(cp.isConnected)cp.querySelector("span").textContent=t("copy")},1800)};
+    try{navigator.clipboard.writeText(txt).then(()=>done(true),()=>done(false))}catch(e){done(false)}};
+  const rd=q("#aRead");if(rd)rd.onclick=()=>{try{if(speechSynthesis.speaking){speechSynthesis.cancel();rd.querySelector("span").textContent=t("read");return}
+    const u=new SpeechSynthesisUtterance(speakText(k));u.lang="en-IN";u.onend=()=>{if(rd.isConnected)rd.querySelector("span").textContent=t("read")};speechSynthesis.speak(u);rd.querySelector("span").textContent=t("stop")}catch(e){}};
+  document.querySelectorAll("#drawer .dtabs button").forEach(b=>b.onclick=()=>{S.tab=b.dataset.tab;document.querySelectorAll("#drawer .dtabs button").forEach(x=>x.setAttribute("aria-selected",x===b));try{history.replaceState(null,"","#"+k+(S.tab!=="overview"?"."+S.tab:""))}catch(e){}renderTab()})}
+function closeDrawer(){const dr=$("#drawer");try{speechSynthesis.cancel()}catch(e){}dr.classList.add("closing");setTimeout(()=>{dr.hidden=true;dr.classList.remove("closing")},RM?0:300);S.sel=null;paint();try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}}
+function summaryText(k){const c=C[k];const R=CUR_REC&&CUR_REC.k===k?CUR_REC:null;const g=sharedGroups(k);
+  return [`${c.n} (${c.o})`,`Capital: ${(c.cap||[]).join(", ")}`,c.pop?`Population: ${fPop(c.pop[0])} (World Bank ${c.pop[1]})`:"",c.gdp?`GDP: ${fUsd(c.gdp[0])} (World Bank ${c.gdp[1]})`:"",`Region: ${c.r}${c.sr?" / "+c.sr:""}`,k!=="IND"&&g.length?`Groupings shared with India: ${g.join(", ")}`:"","— WorldView Atlas"].filter(Boolean).join("\n")}
+function speakText(k){const fb=CUR_REC&&CUR_REC.fb;const bg=fb&&fb.overview&&fb.overview.find(r=>r[0]==="Background");return `${C[k].n}. Capital: ${(C[k].cap||[]).join(", ")}. `+(bg?bg[1].split("\n\n").slice(0,2).join(" "):"")}
+
+/* ---------- tab rendering helpers ---------- */
+const FLD=(lbl)=>S.lang!=="en"&&FL[S.lang]&&FL[S.lang][lbl]?FL[S.lang][lbl]:lbl;
+function fbRows(R,tab,exclude){const rows=(R.fb[tab]||[]).filter(r=>!(exclude||[]).includes(r[0]));return rows}
+function kv(rows,opts={}){if(!rows.length)return "";return `<dl class="kv">${rows.map(([l,v])=>{const long=String(v).length>420;return `<dt>${esc(opts.raw?l:FLD(l))}</dt><dd>${long?`<div class="clamp">${esc(v)}</div><button class="morebtn" data-more>${esc(t("more"))}</button>`:esc(v)}</dd>`}).join("")}</dl>`}
+function sec(title,body,badge){if(!body)return "";return `<section class="sec"><h3>${esc(title)}${badge||""}</h3>${body}</section>`}
+const fbBadge=()=>`<span class="badge warn" title="${esc(t("fbNote"))}">Factbook · Feb 2026</span>`;
+const curBadge=()=>`<span class="badge ok">${esc(t("verified"))} · 12 Oct 2026</span>`;
+function pctBars(text,max=7){if(!text)return "";const re=/([^,;:()\n]+?)\s*(?:\([^)]*\))?\s+(\d{1,3}(?:\.\d+)?)%/g;let m,out=[];
+  while((m=re.exec(text))){const label=m[1].replace(/^(and|other)\s+/i,s=>s).trim();const p=parseFloat(m[2]);if(p>0&&p<=100&&label.length<60&&!/^\d/.test(label))out.push([label,p])}
+  if(out.length<2)return "";out=out.slice(0,max);const mx=Math.max(...out.map(x=>x[1]));
+  return `<div class="bars">${out.map(([l,p])=>`<div class="bar"><span class="t" title="${esc(l)}">${esc(l)}</span><span class="p">${p}%</span><div class="track"><div class="fill" style="width:${(p/mx*100).toFixed(1)}%"></div></div></div>`).join("")}</div>`}
+function lineChart(series,fmt,label){if(!series||series.length<3)return "";const w=520,h=170,m={l:44,r:14,t:12,b:24};
+  const x=d3.scaleLinear().domain(d3.extent(series,d=>d[0])).range([m.l,w-m.r]);const y=d3.scaleLinear().domain([0,d3.max(series,d=>d[1])*1.08]).nice(4).range([h-m.b,m.t]);
+  const ln=d3.line().x(d=>x(d[0])).y(d=>y(d[1])).curve(d3.curveMonotoneX),ar=d3.area().x(d=>x(d[0])).y0(h-m.b).y1(d=>y(d[1])).curve(d3.curveMonotoneX);
+  const yt=y.ticks(4),xt=x.ticks(5).map(Math.round).filter((v,i,a)=>a.indexOf(v)===i);const last=series[series.length-1];
+  return `<div class="chart" role="img" aria-label="${esc(label)}"><svg viewBox="0 0 ${w} ${h}">${yt.map(v=>`<line class="gd" x1="${m.l}" x2="${w-m.r}" y1="${y(v)}" y2="${y(v)}"/><text x="${m.l-6}" y="${y(v)+3}" text-anchor="end">${esc(fmt(v))}</text>`).join("")}
+  ${xt.map(v=>`<text x="${x(v)}" y="${h-6}" text-anchor="middle">${v}</text>`).join("")}<path class="ar" d="${ar(series)}"/><path class="ln" d="${ln(series)}"/><circle class="end" cx="${x(last[0])}" cy="${y(last[1])}" r="4"/><text x="${x(last[0])-6}" y="${y(last[1])-8}" text-anchor="end" style="fill:var(--fg)">${esc(fmt(last[1]))} (${last[0]})</text></svg></div>`}
+const shortNum=v=>v>=1e9?(v/1e9).toFixed(v>=1e10?0:1)+"B":v>=1e6?(v/1e6).toFixed(v>=1e7?0:1)+"M":v>=1e3?(v/1e3).toFixed(0)+"k":String(Math.round(v));
+const fbGet=(R,tab,lbl)=>{const r=(R.fb[tab]||[]).find(x=>x[0]===lbl);return r?r[1]:null};
+
+function renderTab(){const R=CUR_REC,k=R.k,c=R.base,cur=R.cur,el=$("#dbody");let h="";
+  const curd=cur&&cur.identity;
+  switch(S.tab){
+  case"overview":{
+    const rows=[[t("official"),c.o],[t("native"),c.nv],[t("capital"),(c.cap||[]).join(", ")||"—"],[t("region"),(RG[S.lang][c.r]||c.r)+(c.sr?" · "+c.sr:"")],[t("iso"),`${c.a2} · ${k} · ${c.n3||"—"}`],[t("tld"),(c.tld||[]).join(" ")||"—"],[t("calling"),(c.cc||[]).join(", ")||"—"],[t("tz"),(c.tz||[]).map(z=>"UTC"+z).join(", ")||"—"],[t("currency"),(c.cur||[]).map(x=>`${x[1]} (${x[0]}${x[2]?", "+x[2]:""})`).join("; ")||"—"],[t("languages"),(c.lang||[]).join(", ")||"—"],[t("un"),c.un?t("yes"):t("no")]];
+    h+=sec(t("keyFacts"),kv(rows,{raw:true}));
+    if(curd)h+=sec(tt("overview")+" · "+t("verified"),kv(Object.entries(curd),{raw:true}),curBadge());
+    const ov=fbRows(R,"overview",["Background"]);if(ov.length){h+=sec("Factbook",kv(ov),fbBadge());
+      const an=fbGet(R,"overview","National anthem(s)");if(an)h+=`<div><a class="act" target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent("National anthem of "+c.n)}">♪ ${esc(t("anthemLink"))}</a></div>`}
+    break}
+  case"geography":{const rk=rankOf(k,"area");
+    h+=`<div class="metric-grid"><div class="mg"><div class="k">${esc(t("area"))}</div><div class="v">${esc(fArea(c.ar))}</div>${c.ar?`<div class="note">${nf(c.ar*0.386102)} sq mi${rk?` · ${esc(t("rank"))} #${rk[0]} ${esc(t("of"))} ${rk[1]}`:""}</div>`:""}</div><div class="mg"><div class="k">${esc(t("landlocked"))}</div><div class="v txt">${c.ll_?t("yes"):t("no")}</div></div></div>`;
+    if(bordersOf(k).length)h+=sec(t("borders"),`<div class="chips">${bordersOf(k).map(b=>`<button class="chip" data-open="${b}">${esc(flagEmoji(b))} ${esc(nameOf(b))}</button>`).join("")}</div>`);
+    h+=sec("Factbook",kv(fbRows(R,"geography")),fbBadge());break}
+  case"people":{const rk=rankOf(k,"population");
+    h+=`<div class="metric-grid"><div class="mg"><div class="k">${esc(t("population"))}</div><div class="v">${esc(fPop(c.pop&&c.pop[0]))}</div><div class="note">${c.pop?esc(fPopAlt(c.pop[0])||nf(c.pop[0]))+" · "+esc(t("wb"))+" "+c.pop[1]:""}${rk?` · #${rk[0]} ${esc(t("of"))} ${rk[1]}`:""}</div></div><div class="mg"><div class="k">${esc(t("density"))}</div><div class="v">${c.pop&&c.ar?nf(c.pop[0]/c.ar,0):"—"}</div><div class="note">${esc(t("perKm"))}</div></div></div>`;
+    h+=sec(t("popTrend"),lineChart(c.pt,shortNum,t("popTrend")),`<span class="badge">${esc(t("wb"))}</span>`);
+    const lg=pctBars(fbGet(R,"people","Languages")),rl=pctBars(fbGet(R,"people","Religions")),et=pctBars(fbGet(R,"people","Ethnic groups"));
+    h+=sec(t("languages"),lg);h+=sec(t("religions"),rl);h+=sec(t("ethnic"),et);
+    if(cur&&cur.cities)h+=sec(t("cities"),`<div class="cities">${cur.cities.map(x=>`<div class="city"><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join("")}</div>`,curBadge());
+    h+=sec("Factbook",kv(fbRows(R,"people")),fbBadge());break}
+  case"government":{
+    if(cur&&cur.gov)h+=sec(t("leadership"),kv(Object.entries(cur.gov),{raw:true})+(k==="BRA"?`<div class="note">${esc(t("source"))}: <a href="https://en.mercopress.com/2026/10/05/flavio-bolsonaro-edges-lula-in-the-first-round-both-head-to-an-october-25-runoff/comments" target="_blank" rel="noopener">MercoPress, 5 Oct 2026</a> (Superior Electoral Court count)</div>`:k==="JPN"?`<div class="note">${esc(t("source"))}: <a href="https://en.wikipedia.org/wiki/2026_Japanese_general_election" target="_blank" rel="noopener">2026 Japanese general election</a> · <a href="https://www.nippon.com/en/japan-data/h02906/takaichi-opts-for-stability-in-first-cabinet-reshuffle.html" target="_blank" rel="noopener">Nippon.com, Sep 2026</a></div>`:""),curBadge());
+    else h+=`<div class="lensbox">${esc(t("fbNote"))}</div>`;
+    h+=sec("Factbook",kv(fbRows(R,"government")),fbBadge());break}
+  case"economy":{const rk=rankOf(k,"gdp");
+    h+=`<div class="metric-grid"><div class="mg"><div class="k">${esc(t("gdp"))}</div><div class="v">${esc(fUsd(c.gdp&&c.gdp[0]))}</div><div class="note">${c.gdp?esc(t("wb"))+" "+c.gdp[1]:""}${rk?` · #${rk[0]} ${esc(t("of"))} ${rk[1]}`:""}</div></div><div class="mg"><div class="k">${esc(t("gdppc"))}</div><div class="v">${c.pc?"$"+nf(c.pc[0]):"—"}</div><div class="note">${c.pc?esc(t("wb"))+" "+c.pc[1]:""}</div></div></div>`;
+    h+=sec(t("gdpTrend"),lineChart(c.gt,v=>v>=1000?(v/1000).toFixed(1)+"T":Math.round(v)+"B",t("gdpTrend")),`<span class="badge">${esc(t("wb"))}</span>`);
+    h+=sec("Factbook",kv(fbRows(R,"economy")),fbBadge());break}
+  case"foreign":{const mem=memberOf(k);
+    if(mem.length)h+=sec(t("memberships"),`<div class="chips">${mem.map(g=>`<button class="chip lensc" data-hl="${g}" aria-pressed="${S.group===g}" title="${esc(GROUPS[g].f)}">${esc(GROUPS[g].n[S.lang])}</button>`).join("")}</div>`);
+    h+=sec("Factbook",kv(fbRows(R,"foreign")),fbBadge());break}
+  case"culture":{
+    if(cur&&cur.culture){h+=sec(tt("culture"),kv(Object.entries(cur.culture),{raw:true}),curBadge());if(cur.tourism)h+=sec(t("attractions"),`<div class="chips">${cur.tourism.map(x=>`<span class="chip">${esc(x)}</span>`).join("")}</div>`)}
+    else h+=`<div class="empty"><b>${esc(t("notCurated"))}</b>${esc(t("notCuratedBody"))}</div>`;
+    const sym=fbGet(R,"overview","National symbol(s)"),her=fbGet(R,"overview","National heritage");if(sym||her)h+=sec("Factbook",kv([sym?["National symbol(s)",sym]:null,her?["National heritage",her]:null].filter(Boolean)),fbBadge());break}
+  case"history":{
+    if(cur&&cur.history)h+=sec(t("timeline"),`<ol class="tl">${cur.history.map(x=>`<li><div class="yr">${esc(x[0])}</div><div>${esc(x[1])}</div></li>`).join("")}</ol>`,curBadge());
+    const bg=fbGet(R,"overview","Background");if(bg)h+=sec(t("background"),`<div class="prose">${esc(bg)}</div>`,fbBadge());
+    const ind=fbGet(R,"overview","Independence");if(ind)h+=kv([["Independence",ind]]);
+    if(!bg&&!(cur&&cur.history))h+=`<div class="empty">${esc(t("notAvail"))}</div>`;break}
+  case"infra":h+=sec("Factbook",kv(fbRows(R,"infra")),fbBadge())||`<div class="empty">${esc(t("notAvail"))}</div>`;break;
+  case"india":h+=indiaLens(R);break;
+  case"facts":{const f=cur&&cur.facts;const gn=fbGet(R,"geography","Geography - note");
+    if(f)h+=sec(tt("facts"),`<ul class="prose" style="margin:0;padding-left:18px;white-space:normal">${f.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`,curBadge());
+    if(gn)h+=sec("Factbook",`<div class="prose">${esc(gn)}</div>`,fbBadge());
+    if(!f&&!gn)h+=`<div class="empty">${esc(t("factsEmpty"))}</div>`;break}}
+  if(S.lang!=="en"&&!["india"].includes(S.tab))h=`<div class="note">${esc(t("langNote"))}</div>`+h;
+  h+=`<div class="foot">${esc(t("dataNote"))}</div>`;
+  el.innerHTML=h;el.scrollTop=0;
+  el.querySelectorAll("[data-more]").forEach(b=>b.onclick=()=>{const d=b.previousElementSibling;const open=d.classList.toggle("clamp");b.textContent=open?t("more"):t("less")})}
+
+function indiaLens(R){const k=R.k,c=R.base;let h=`<div class="lensbox"><b>${esc(t("analytical"))}.</b> ${esc(t("matrixNote"))}</div>`;
+  if(k==="IND"){h+=`<div class="note">${esc(t("self"))}</div>`;
+    h+=sec(t("indiaGroups"),`<div class="chips">${sharedGroups("IND").map(g=>`<button class="chip lensc" data-hl="${g}" aria-pressed="${S.group===g}" title="${esc(GROUPS[g].f)}">${esc(GROUPS[g].n[S.lang])} <span class="x">${GROUPS[g].m.length}</span></button>`).join("")}</div>`);
+    h+=sec(t("neighbours"),`<div class="chips">${bordersOf("IND").map(b=>`<button class="chip" data-open="${b}">${esc(flagEmoji(b))} ${esc(nameOf(b))}</button>`).join("")}</div>`);
+    h+=sec(t("corridors"),["imec","instc"].map(x=>`<div><b style="font-weight:600">${esc(CORR[x].n[S.lang])}</b><div class="note">${esc(CORR[x].t)}</div></div>`).join(""));
+    return h}
+  const g=sharedGroups(k);const cen=c.ll?[c.ll[1],c.ll[0]]:d3.geoCentroid(byId[k]);const d=distKm(DELHI,cen);
+  let near=null;CHOKE.forEach(ch=>{const dd=distKm(ch.ll,cen);if(!near||dd<near[1])near=[ch,dd]});
+  const ior=GROUPS.IORA.m.includes(k),bord=bordersOf(k).includes("IND");
+  h+=`<div class="metric-grid"><div class="mg"><div class="k">${esc(t("sharedGroups"))}</div><div class="v">${g.length}</div></div><div class="mg"><div class="k">${esc(t("distance"))}</div><div class="v">${nf(d)} ${esc(t("km"))}</div><div class="note">${esc(t("distNote"))}</div></div><div class="mg"><div class="k">${esc(t("border"))}</div><div class="v txt">${bord?t("yes"):t("no")}</div></div><div class="mg"><div class="k">${esc(t("ior"))}</div><div class="v txt">${ior?t("yes"):t("no")}</div></div></div>`;
+  if(g.length)h+=sec(t("sharedGroups"),`<div class="chips">${g.map(x=>`<button class="chip lensc" data-hl="${x}" aria-pressed="${S.group===x}" title="${esc(GROUPS[x].f)}">${esc(GROUPS[x].n[S.lang])}</button>`).join("")}</div>`);
+  if(near&&near[1]<2500)h+=sec(t("nearChoke"),`<div class="list"><button data-choke="${near[0].id}"><i class="dot"></i><span>${esc(near[0].n[S.lang])} · <span class="mono">${nf(near[1])} ${esc(t("km"))}</span><small>${esc(near[0].t)}</small></span></button></div>`);
+  const cur=R.cur&&R.cur.india;if(cur)h+=sec(t("relNotes"),kv(Object.entries(cur),{raw:true}),curBadge());
+  h+=sec(t("feed"),`<div class="empty">${esc(t("feedBody"))}</div>`);
+  return h}
+
+/* ---------- compare ---------- */
+function toggleCmp(k){if(S.cmp.includes(k))S.cmp=S.cmp.filter(x=>x!==k);else{S.cmp=[...S.cmp,k].slice(-2)}renderTray();if(S.ptab==="library")renderPanel()}
+function renderTray(){const tr=$("#tray");if(!S.cmp.length){tr.hidden=true;return}tr.hidden=false;
+  tr.innerHTML=`<span class="lbl">${esc(t("compare"))}</span>${S.cmp.map(k=>`<button class="chip" data-uncmp="${k}">${esc(flagEmoji(k))} ${esc(nameOf(k))} <span class="x">×</span></button>`).join("")}<button class="primary" id="cmpGo" ${S.cmp.length<2?"disabled":""}>${esc(t("openCompare"))}</button>`;
+  tr.querySelectorAll("[data-uncmp]").forEach(b=>b.onclick=()=>{toggleCmp(b.dataset.uncmp);const a=$("#aCmp");if(a&&S.sel===b.dataset.uncmp){a.setAttribute("aria-pressed","false");a.lastChild.textContent=t("addCompare")}});
+  $("#cmpGo").onclick=openCompare}
+async function openCompare(){const [a,b]=S.cmp;const md=$("#modal");md.hidden=false;md.innerHTML=`<div class="mcard"><div class="skel"></div></div>`;
+  let fa={},fb={};try{const [sa,sb]=await Promise.all([shard(a),shard(b)]);fa=(sa[a]||{}).fb||{};fb=(sb[b]||{}).fb||{}}catch(e){}
+  const ca=C[a],cb=C[b];const row=(lbl,va,vb,na,nb)=>{const mx=Math.max(na||0,nb||0);const bar=n=>n!=null&&mx>0?`<div class="cbar" style="width:${Math.max(2,n/mx*100).toFixed(1)}%"></div>`:"";return `<tr><th>${esc(lbl)}</th><td><span class="mono">${esc(va)}</span>${bar(na)}</td><td><span class="mono">${esc(vb)}</span>${bar(nb)}</td></tr>`};
+  const g=(fbx,tab,l)=>{const r=(fbx[tab]||[]).find(x=>x[0]===l);if(!r)return "—";const s=r[1].split("\n")[0];return s.length>140?s.slice(0,140)+"…":s};
+  const rows=[row(t("capital"),(ca.cap||[]).join(", "),(cb.cap||[]).join(", ")),row(t("region"),RG[S.lang][ca.r]||ca.r,RG[S.lang][cb.r]||cb.r),
+    row(t("population"),fPop(ca.pop&&ca.pop[0]),fPop(cb.pop&&cb.pop[0]),metric(a,"population"),metric(b,"population")),
+    row(t("area"),fArea(ca.ar),fArea(cb.ar),ca.ar,cb.ar),row(t("density"),fCompact(metric(a,"density"),"density"),fCompact(metric(b,"density"),"density"),metric(a,"density"),metric(b,"density")),
+    row(t("gdp"),fUsd(ca.gdp&&ca.gdp[0]),fUsd(cb.gdp&&cb.gdp[0]),metric(a,"gdp"),metric(b,"gdp")),row(t("gdppc"),ca.pc?"$"+nf(ca.pc[0]):"—",cb.pc?"$"+nf(cb.pc[0]):"—",metric(a,"gdppc"),metric(b,"gdppc")),
+    row(FLD("Government type"),g(fa,"government","Government type"),g(fb,"government","Government type")),row(FLD("Life expectancy at birth"),g(fa,"people","Life expectancy at birth"),g(fb,"people","Life expectancy at birth")),
+    row(FLD("Literacy"),g(fa,"people","Literacy"),g(fb,"people","Literacy")),row(FLD("Internet users"),g(fa,"infra","Internet users"),g(fb,"infra","Internet users")),
+    row(FLD("Military expenditures"),g(fa,"foreign","Military expenditures"),g(fb,"foreign","Military expenditures")),
+    row(t("currency"),(ca.cur||[]).map(x=>x[0]).join(", "),(cb.cur||[]).map(x=>x[0]).join(", ")),row(t("tz"),(ca.tz||[]).map(z=>"UTC"+z).join(", "),(cb.tz||[]).map(z=>"UTC"+z).join(", ")),
+    row(t("shared"),a==="IND"?t("india"):sharedGroups(a).join(", ")||"—",b==="IND"?t("india"):sharedGroups(b).join(", ")||"—")];
+  md.innerHTML=`<div class="mcard" role="dialog" aria-modal="true" aria-label="${esc(t("compare"))}"><button class="icon-btn closeX" id="mClose" aria-label="${esc(t("close"))}"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button><h2>${esc(t("compare"))}</h2><div class="cwrap"><table class="ctab"><thead><tr><th></th><th>${esc(flagEmoji(a))} ${esc(nameOf(a))}</th><th>${esc(flagEmoji(b))} ${esc(nameOf(b))}</th></tr></thead><tbody>${rows.join("")}</tbody></table></div><div class="foot" style="margin-top:12px">${esc(t("dataNote"))}</div></div>`;
+  $("#mClose").onclick=()=>{md.hidden=true};md.onclick=e=>{if(e.target===md)md.hidden=true}}
+
+/* ---------- global events ---------- */
+function applyLang(){document.documentElement.lang=S.lang;$("#tagline").textContent=t("tag");$("#q").placeholder=t("search");$("#hint").textContent=t("clickHint");
+  document.querySelectorAll(".seg [data-lang]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===S.lang));
+  renderPanel();legend();renderTray();if(S.sel){const k=S.sel;if(CUR_REC&&CUR_REC.k===k){$("#drawer").innerHTML=heroHTML(k,CUR_REC)+tabsHTML()+`<div class="dbody" id="dbody"></div>`;wireDrawer(k);renderTab()}else openCountry(k)}}
+function setTheme(next){const root=document.documentElement;root.setAttribute("data-theme",next);store.set("theme",next);setTimeout(()=>{buildColor();paint()},30)}
+document.addEventListener("click",e=>{const el=e.target.closest("[data-color],[data-proj],[data-ed],[data-group],[data-open],[data-choke],[data-hl],[data-sort],.ptabs [data-p]");if(!el)return;
+  if(el.dataset.p){S.ptab=el.dataset.p;if(S.ptab==="lens"&&S.color==="region"){S.color="shared";store.set("color",S.color);buildColor();paint()}renderPanel();return}
+  if(el.dataset.color){S.color=el.dataset.color;store.set("color",S.color);buildColor();paint();renderPanel();return}
+  if(el.dataset.proj){if(S.proj!==el.dataset.proj){S.proj=el.dataset.proj;setupProjection();attachInteraction();render();if(S.sel)flyTo(S.sel)}renderPanel();return}
+  if(el.dataset.ed){if(S.edition!==el.dataset.ed)setEdition(el.dataset.ed);return}
+  if(el.dataset.group!==undefined&&el.closest("#panel")){S.group=el.dataset.group||null;paint();renderPanel();return}
+  if(el.dataset.hl){S.group=S.group===el.dataset.hl?null:el.dataset.hl;paint();renderPanel();renderTab();return}
+  if(el.dataset.sort){const f=el.dataset.sort;S.mxSort=S.mxSort[0]===f?[f,-S.mxSort[1]]:[f,f==="n"?1:-1];renderPanel();return}
+  if(el.dataset.choke){const c=CHOKE.find(x=>x.id===el.dataset.choke);if(!S.layers.choke){S.layers.choke=true;store.set("layers",S.layers);drawOverlays();renderPanel()}
+    if(S.proj==="flat"){const xy=proj(c.ll);{const v=viewCentre();svg.transition().duration(RM?0:900).call(zoom.transform,d3.zoomIdentity.translate(v.ox,v.oy).scale(5).translate(-xy[0],-xy[1]))}}
+    else{const ip=d3.interpolate(proj.rotate(),[-c.ll[0],-c.ll[1],0]);d3.transition().duration(RM?0:900).tween("r",()=>x=>{proj.rotate(ip(x));drawAll()})}return}
+  if(el.dataset.open){openCountry(el.dataset.open);if(innerWidth<=820)$("#panel").dataset.open="false";return}});
+document.addEventListener("change",e=>{const l=e.target.dataset&&e.target.dataset.layer;if(l){S.layers[l]=e.target.checked;store.set("layers",S.layers);drawOverlays()}});
+document.querySelectorAll(".seg [data-lang]").forEach(b=>b.onclick=()=>{S.lang=b.dataset.lang;store.set("lang",S.lang);applyLang()});
+$("#themeBtn").onclick=()=>{const cur=document.documentElement.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");setTheme(cur==="dark"?"light":"dark")};
+try{matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{buildColor();paint()})}catch(e){}
+$("#zIn").onclick=()=>zoomBy(1.6);$("#zOut").onclick=()=>zoomBy(1/1.6);$("#zReset").onclick=resetView;
+$("#panelBtn").onclick=()=>{const p=$("#panel");p.dataset.open=p.dataset.open==="false"?"true":"false"};
+const q=$("#q");q.addEventListener("input",doSearch);q.addEventListener("focus",doSearch);
+q.addEventListener("keydown",e=>{const ul=$("#qres");if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();if(!qItems.length)return;qSel=(qSel+(e.key==="ArrowDown"?1:-1)+qItems.length)%qItems.length;ul.querySelectorAll("li").forEach((li,i)=>li.setAttribute("aria-selected",i===qSel))}
+  else if(e.key==="Enter"&&qSel>=0)pickSearch(qItems[qSel]);else if(e.key==="Escape"){ul.hidden=true;q.blur()}});
+$("#qres").addEventListener("mousedown",e=>{const li=e.target.closest("li[data-k]");if(li){e.preventDefault();pickSearch(li.dataset.k)}});
+q.addEventListener("blur",()=>setTimeout(()=>{$("#qres").hidden=true},120));
+document.addEventListener("keydown",e=>{const typing=/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
+  if(e.key==="/"&&!typing){e.preventDefault();q.focus()}else if(e.key==="Escape"&&!typing){if(!$("#modal").hidden)$("#modal").hidden=true;else if(S.sel)closeDrawer()}
+  else if(!typing&&(e.key==="+"||e.key==="="))zoomBy(1.6);else if(!typing&&e.key==="-")zoomBy(1/1.6)});
+let rs;addEventListener("resize",()=>{clearTimeout(rs);rs=setTimeout(()=>{const keep=S._rot;setupProjection();if(keep&&S.proj==="globe")proj.rotate(keep);attachInteraction();render()},150)});
+addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(!h)return;const [k,tb]=h.split(".");if(k&&k!==S.sel&&(C[k]||byId[k]))openCountry(k,tb)});
+
+/* ---------- boot ---------- */
+async function boot(){if(innerWidth<=820)$("#panel").dataset.open="false";const th=store.get("theme",null);if(th)document.documentElement.setAttribute("data-theme",th);
+  try{const [c,cur]=await Promise.all([getJSON(BASE+"countries.json"),getJSON(BASE+"curated.json")]);C=c;CUR=cur;
+    feats=await loadGeo(S.edition);byId=Object.fromEntries(feats.map(f=>[f.id,f]))}
+  catch(e){$("#loadMsg").innerHTML=esc(I[S.lang].loadErr)+` <button class="morebtn" onclick="location.reload()">${esc(I[S.lang].retry)}</button>`;return}
+  buildIndex();buildColor();setupProjection();attachInteraction();render();applyLang();
+  $("#loader").hidden=true;
+  const h=location.hash.slice(1);if(h){const [k,tb]=h.split(".");if(C[k]||byId[k])openCountry(k,tb)}}
+boot();
+})();
+</script>
+
+</body>
+</html>
